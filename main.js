@@ -198,19 +198,20 @@ function setScene(scene) {
   renderStatic();
 }
 function coords(event) { const r = canvas.getBoundingClientRect(); return { x: clamp((event.clientX - r.left) / r.width, 0, 1), y: clamp((event.clientY - r.top) / r.height, 0, 1) }; }
-canvas.addEventListener('pointermove', e => {
+document.addEventListener('pointermove', e => {
   const p = coords(e); state.pointer.x = p.x; state.pointer.y = p.y; state.pointer.active = true;
   if (state.dragging) { state.heat.x = p.x; state.heat.y = p.y; }
   canvas.style.cursor = (state.scene === 'thermal' && Math.hypot(p.x - state.heat.x, p.y - state.heat.y) < .06) ? 'grab' : 'crosshair'; renderStatic();
 });
-canvas.addEventListener('pointerleave', () => { state.pointer.active = false; state.pointer.down = false; state.dragging = false; renderStatic(); });
-canvas.addEventListener('pointerdown', e => {
+document.addEventListener('pointerout', e => { if (!e.relatedTarget) { state.pointer.active = false; state.pointer.down = false; state.dragging = false; renderStatic(); } });
+document.addEventListener('pointerdown', e => {
+  if (e.target.closest('button,a')) return;
   const p = coords(e); state.pointer.down = true;
-  if (state.scene === 'thermal' && Math.hypot(p.x - state.heat.x, p.y - state.heat.y) < .09) { state.dragging = true; canvas.setPointerCapture(e.pointerId); }
+  if (state.scene === 'thermal' && Math.hypot(p.x - state.heat.x, p.y - state.heat.y) < .09) state.dragging = true;
   else if (state.scene === 'vibration' || state.scene === 'spatial') state.pulses.push({ x: p.x, y: p.y, at: performance.now(), power: state.intensity / 3 });
   renderStatic();
 });
-canvas.addEventListener('pointerup', () => { state.pointer.down = false; state.dragging = false; });
+document.addEventListener('pointerup', () => { state.pointer.down = false; state.dragging = false; });
 document.querySelectorAll('.nav-item').forEach(b => b.addEventListener('click', () => setScene(b.dataset.scene)));
 document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => setScene(b.dataset.go)));
 document.querySelector('#next').addEventListener('click', () => {

@@ -18,6 +18,7 @@ Then visit <http://localhost:8000>.
 - Drag the small amber source to move the thermal cue.
 - Press and hold in the field to trigger a forked tongue sampling gesture.
 - Tap or click to send a ground vibration pulse. Set its strength in the side panel.
+- Choose **Enable hand gestures** to opt into camera control: open palm stirs the field, pinch moves the heat source, two raised fingers trigger tongue sampling, and a fist sends a vibration pulse. Camera frames are processed locally in the browser; the camera starts only after the control is enabled. HTTPS or localhost is required.
 - Use the pause control or the operating-system reduced-motion preference to reduce animation.
 
 The visualization is an artistic interpretation, not a literal view through a snake's eyes. The forked tongue is described as a chemical sampling structure; the exact mechanisms of trail following remain an active research question.

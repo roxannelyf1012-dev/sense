@@ -11,6 +11,7 @@
 <body>
   <canvas id="field" aria-label="Interactive sensory world: move to disturb thermal particles, hold to sample chemical trails, tap to send vibrations, or drag a warm source."></canvas>
   <div class="atmosphere" aria-hidden="true"></div>
+  <video id="hand-video" autoplay muted playsinline aria-label="Local hand tracking preview"></video>
   <header class="topbar">
     <a class="identity" href="#field" aria-label="Sensory Serpent field"><span class="sigil">S<span>/</span>S</span><span class="identity-name">SENSORY<br>SERPENT</span></a>
     <div class="top-note"><span class="live"></span> A SHARED SENSORY FIELD <span class="top-divider">/</span> CROTALUS</div>
@@ -38,6 +39,8 @@
       <div class="gesture"><span class="gesture-icon tap-icon">⌁</span><span><b>Tap / click</b><small>send a vibration pulse</small></span></div>
       <div class="gesture"><span class="gesture-icon drag-icon">⤧</span><span><b>Drag amber source</b><small>move the warm signal</small></span></div>
     </div>
+    <button class="hand-toggle" id="hand-toggle" type="button"><span class="camera-glyph">◎</span><span class="hand-label">ENABLE HAND GESTURES</span><i>CAMERA IS LOCAL</i></button>
+    <p class="hand-legend">OPEN PALM / STIR <i>·</i> PINCH / HEAT <i>·</i> TWO FINGERS / SAMPLE <i>·</i> FIST / PULSE</p>
 
     <div class="pulse-setting"><span>GROUND PULSE</span><div class="levels"><button type="button" data-level="1">LOW</button><button type="button" data-level="2" class="selected">MID</button><button type="button" data-level="3">HIGH</button></div></div>
 

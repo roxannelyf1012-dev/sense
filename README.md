@@ -1,10 +1,10 @@
 # Sensory / Serpent
 
-A single-screen interactive field guide to rattlesnake perception. Heat, chemical traces, and ground-borne vibration remain together in one Canvas particle simulation; gestures reveal and perturb each signal in the shared environment.
+A single-screen cinematic interpretation of rattlesnake thermal sensing. The opening moves from the supplied close-up scale and eye references into a dark red-and-white heat view, where a warm animal and flowing infrared cues respond to pointer or hand movement.
 
 ## Run locally
 
-Open `index.html` in a modern browser, or serve this folder with a static server:
+Serve this folder from `localhost` or deploy it over HTTPS. Camera access is unavailable to pages opened directly as `file://`.
 
 ```sh
 python -m http.server 8000
@@ -12,25 +12,16 @@ python -m http.server 8000
 
 Then visit <http://localhost:8000>.
 
-## Gestures
+## Interactions
 
-- Move through the field to disturb nearby particles.
-- Drag the small amber source to move the thermal cue.
-- Press and hold in the field to trigger a forked tongue sampling gesture.
-- Tap or click to send a ground vibration pulse. Set its strength in the side panel.
-- Choose **Open camera** to request camera permission for hand control: open palm stirs the field, pinch moves the heat source, two raised fingers trigger tongue sampling, and a fist sends a vibration pulse. Camera frames are processed locally in the browser; the camera starts only after you allow the browser prompt. HTTPS or localhost is required. Use the same button to stop the camera.
-- Collapse the field notes panel to give the particle field more room. The camera control remains available in the top bar.
-- Use the pause control or the operating-system reduced-motion preference to reduce animation.
+- The scene transitions from scales to the loreal pit and then to a thermal interpretation. Select **ENTER THERMAL VIEW** to skip ahead or use the replay control to start over.
+- Move the pointer or touch the scene to follow the warm animal and heat trail.
+- Expand **FIELD NOTE** for a short explanation of infrared sensing.
+- Choose **OPEN CAMERA** to request camera permission. Open palm and pinch gestures move the heat target. The browser processes camera frames locally. Camera access requires HTTPS or localhost and an explicit browser permission.
+- If camera permission cannot be obtained, the status card reports the browser error. If only the hand tracker fails to load, the live camera preview remains available and can retry the tracker.
 
-The visualization is an artistic interpretation, not a literal view through a snake's eyes. The forked tongue is described as a chemical sampling structure; the exact mechanisms of trail following remain an active research question.
-
-## Research references
-
-- Gracheva et al. (2010), [Molecular basis of infrared detection by snakes](https://www.nature.com/articles/nature08943), *Nature*.
-- Parker, Young & Kardong (2008), [The forked tongue and edge detection in snakes](https://pubmed.ncbi.nlm.nih.gov/18298279/), *Journal of Comparative Psychology*.
-- Friedel, Young & van Hemmen (2008), [Auditory localization of ground-borne vibrations in snakes](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.100.048701), *Physical Review Letters*.
-- Zdenek et al. (2023), [How snakes respond to airborne and groundborne sounds](https://pmc.ncbi.nlm.nih.gov/articles/PMC9928108/).
+The red and white thermal image is an artistic visualization; rattlesnakes detect infrared radiation with pit organs and do not see this human-style thermal palette.
 
 ## Deploy
 
-This is a static site with no build step. Publish the repository root with GitHub Pages or import it into Vercel as a static project.
+This is a static site with no build step. Publish the project root with GitHub Pages or a static hosting provider such as Vercel.

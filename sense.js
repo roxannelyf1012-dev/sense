@@ -45,14 +45,14 @@ if (!gl) {
       p = vec3(cy * p.x + sy * p.z, p.y, -sy * p.x + cy * p.z);
       float cx = cos(uPitch), sx = sin(uPitch);
       p = vec3(p.x, cx * p.y - sx * p.z, sx * p.y + cx * p.z);
-      float depth = max(1.25, 4.15 - p.z);
+      float depth = max(1.35, 3.55 - p.z);
       float aspect = uResolution.x / uResolution.y;
-      float focal = 1.78;
+      float focal = 2.12;
       float zNear = .1, zFar = 30.0;
       float viewZ = -depth;
       float clipZ = ((zFar + zNear) / (zNear - zFar)) * viewZ + (2.0 * zFar * zNear) / (zNear - zFar);
       gl_Position = vec4(p.x * focal / aspect, p.y * focal, clipZ, depth);
-      gl_PointSize = clamp(aSize * uPointScale * uResolution.y / (depth * 230.0), 1.0, 9.0);
+      gl_PointSize = clamp(aSize * uPointScale * uResolution.y / (depth * 125.0), 1.0, 9.0);
       vColor = aColor;
       vFade = clamp(1.22 - depth * .105, .48, 1.0);
       vPhase = aPhase;
@@ -223,7 +223,7 @@ if (!gl) {
       const dt=Math.min(.04,Math.max(.008,(now-(state.last||now))*.001));state.last=now;state.time+=dt;
       if(state.intro&&!reduced.matches){const age=now-state.introAt;if(state.intro==='head'&&age>1800){state.intro='scales';morph();ui.index.textContent='PROLOGUE / SCALES';ui.title.innerHTML='A living<br>surface.';ui.copy.textContent='Thousands of points rise into overlapping scales.';}else if(state.intro==='scales'&&age>4100){state.intro='eye';morph();ui.index.textContent='PROLOGUE / EYE + PIT';ui.title.innerHTML='Feel the<br>invisible.';ui.copy.textContent='A vertical pupil and paired heat pits emerge from the scale field.';}else if(state.intro==='eye'&&age>6900){state.intro='';setMode(state.mode);}}
       const pointX=(state.pointer.x-.5)*3.45,pointY=(.5-state.pointer.y)*1.92;
-      state.targetYaw=(state.pointer.x-.5)*.36;state.targetPitch=(.5-state.pointer.y)*.24;
+      state.targetYaw=(state.pointer.x-.5)*.58;state.targetPitch=(.5-state.pointer.y)*.42;
       state.yaw+=(state.targetYaw-state.yaw)*.045;state.pitch+=(state.targetPitch-state.pitch)*.045;
       const positions=new Float32Array(state.particles.length*3),colors=new Float32Array(state.particles.length*3),sizes=new Float32Array(state.particles.length),phases=new Float32Array(state.particles.length);
       gl.clearColor(.015,.018,.024,1);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(program);

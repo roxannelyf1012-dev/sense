@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08070e" />
+    <meta name="description" content="An immersive sensory experience inspired by the rattlesnake." />
+    <title>SENSE — Experience the world through a rattlesnake</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="wordmark" href="#world" aria-label="SENSE home">S<span>·</span>E</a>
+      <nav aria-label="Main navigation"><a class="nav-link active" href="#world">THE WORLD</a><a class="nav-link" href="#anatomy">THE BODY</a></nav>
+      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false"><span class="status-dot"></span><span class="motion-label">MOTION ON</span></button>
+    </header>
+
+    <main>
+      <section id="world" class="world-section" aria-labelledby="hero-title">
+        <canvas id="sense-canvas" aria-label="Interactive sensory visualization: move or tap to explore heat, infrared signals, chemical trails, and ground vibrations."></canvas>
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> FIELD STUDY 01 / CROTALUS</p>
+          <h1 id="hero-title">S<span class="title-e">E</span>NSE</h1>
+          <p class="hero-subtitle">SEE BEYOND<br />WHAT YOU SEE.</p>
+          <p class="hero-caption">A different way of experiencing the world.</p>
+          <a class="enter-link" href="#anatomy"><span>ENTER THE SENSORY FIELD</span><span class="enter-arrow">↘</span></a>
+        </div>
+        <div class="scene-meta"><span>01 — 02</span><span class="meta-rule"></span><span>DESERT / AFTER DARK</span></div>
+        <div class="sound-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="sense-legend" aria-label="Sensory layers">
+          <button class="sense-chip is-active" data-sense="thermal"><span class="chip-index">01</span><span class="chip-icon heat-icon"></span><span>THERMAL</span><span class="chip-status">LIVE</span></button>
+          <button class="sense-chip is-active" data-sense="infrared"><span class="chip-index">02</span><span class="chip-icon infrared-icon"></span><span>INFRARED</span><span class="chip-status">LIVE</span></button>
+          <button class="sense-chip is-active" data-sense="chemical"><span class="chip-index">03</span><span class="chip-icon chemical-icon"></span><span>CHEMICAL</span><span class="chip-status">LIVE</span></button>
+          <button class="sense-chip is-active" data-sense="vibration"><span class="chip-index">04</span><span class="chip-icon vibration-icon"></span><span>VIBRATION</span><span class="chip-status">LIVE</span></button>
+        </div>
+        <button id="tongue-trigger" class="tongue-trigger" type="button"><span class="trigger-icon">⌁</span><span>FLICK TO SAMPLE</span><span class="trigger-key">TAP / CLICK</span></button>
+        <p class="interaction-hint">MOVE TO EXPLORE <span>·</span> TAP A HEAT SOURCE</p>
+        <div id="sense-tooltip" class="sense-tooltip" role="status" aria-live="polite" hidden></div>
+        <a class="scroll-cue" href="#anatomy" aria-label="Scroll to anatomy"><span>SCROLL TO FEEL</span><span class="scroll-line"></span></a>
+      </section>
+
+      <section id="anatomy" class="anatomy-section" aria-labelledby="anatomy-title">
+        <div class="anatomy-head">
+          <p class="eyebrow"><span class="eyebrow-line"></span> FIELD STUDY 02 / THE INSTRUMENT</p>
+          <div class="anatomy-title-row"><h2 id="anatomy-title">A BODY<br />BUILT TO <em>SENSE.</em></h2><p class="anatomy-intro">Every surface is an instrument.<br />Every movement, a question.</p></div>
+        </div>
+        <div class="anatomy-stage">
+          <div class="anatomy-aura aura-one"></div><div class="anatomy-aura aura-two"></div>
+          <svg class="snake-study" viewBox="0 0 900 420" role="img" aria-labelledby="snake-title snake-desc">
+            <title id="snake-title">Abstract rattlesnake anatomy</title><desc id="snake-desc">A glowing, coiled rattlesnake silhouette with interactive points for its pit organ, forked tongue, jaw, and body.</desc>
+            <defs>
+              <linearGradient id="snakeStroke" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fb8157"/><stop offset=".35" stop-color="#d751da"/><stop offset=".7" stop-color="#8a6cff"/><stop offset="1" stop-color="#4ae6d0"/></linearGradient>
+              <filter id="snakeGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="13" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <radialGradient id="bodyFill"><stop stop-color="#f86ca8" stop-opacity=".28"/><stop offset="1" stop-color="#7654e9" stop-opacity=".03"/></radialGradient>
+            </defs>
+            <path class="snake-halo" d="M766 218 C732 142 641 119 565 162 C489 205 501 305 423 322 C346 338 275 272 312 204 C351 133 469 149 468 222 C467 289 388 299 350 255 C316 216 355 179 394 193 C432 206 420 250 391 255 C366 259 356 238 370 224 C382 213 395 223 391 234 C389 240 382 241 379 237" fill="none"/>
+            <path class="snake-body" d="M766 218 C732 142 641 119 565 162 C489 205 501 305 423 322 C346 338 275 272 312 204 C351 133 469 149 468 222 C467 289 388 299 350 255 C316 216 355 179 394 193 C432 206 420 250 391 255 C366 259 356 238 370 224 C382 213 395 223 391 234 C389 240 382 241 379 237" fill="none"/>
+            <path class="snake-core" d="M766 218 C732 142 641 119 565 162 C489 205 501 305 423 322 C346 338 275 272 312 204 C351 133 469 149 468 222 C467 289 388 299 350 255 C316 216 355 179 394 193 C432 206 420 250 391 255 C366 259 356 238 370 224 C382 213 395 223 391 234 C389 240 382 241 379 237" fill="none"/>
+            <path class="head-shape" d="M753 194 Q791 190 805 211 Q793 230 763 235 L744 221Z"/>
+            <path class="head-detail" d="M779 205 Q791 202 798 211 M778 221 Q790 225 798 216"/>
+            <path class="tongue-study" d="M803 213 C825 211 833 202 849 197 M833 208 L844 221"/>
+            <g class="rattle"><path d="M379 237 Q366 231 360 239 Q354 247 364 251 Q373 254 379 247"/><path d="M365 239 Q359 235 354 242"/><path d="M359 242 Q353 239 349 246"/></g>
+            <circle class="anatomy-point" data-part="pit" cx="773" cy="209" r="8"/><circle class="anatomy-point" data-part="tongue" cx="835" cy="207" r="8"/><circle class="anatomy-point" data-part="jaw" cx="790" cy="227" r="8"/><circle class="anatomy-point" data-part="body" cx="480" cy="185" r="8"/>
+          </svg>
+          <div class="anatomy-label label-pit"><span>01 / PIT ORGAN</span><i></i></div>
+          <div class="anatomy-label label-tongue"><span>02 / FORKED TONGUE</span><i></i></div>
+          <div class="anatomy-label label-jaw"><span>03 / JAW & GROUND</span><i></i></div>
+          <div class="anatomy-label label-body"><span>04 / WHOLE-BODY VIBRATION</span><i></i></div>
+          <div class="anatomy-tooltip" id="anatomy-tooltip" role="status" aria-live="polite">Hover or tap a point to discover its sensory role.</div>
+          <p class="diagram-note">AN ABSTRACT INTERPRETATION OF SENSORY ANATOMY</p>
+        </div>
+        <footer class="page-footer"><a class="wordmark" href="#world">S<span>·</span>E</a><span>THE WORLD IS MORE THAN WHAT MEETS THE EYE.</span><a href="#world">BACK TO THE FIELD ↑</a></footer>
+      </section>
+    </main>
+  </body>
+</html>

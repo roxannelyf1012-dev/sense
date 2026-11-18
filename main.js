@@ -424,11 +424,17 @@ async function startHandTracking() {
   handButton.querySelector('.hand-label').textContent = 'STARTING…';
   setHandStatus('ALLOW CAMERA IN YOUR BROWSER', 'waiting');
   setNote('Waiting for camera permission. Video stays on this device.', 'HAND TRACKING / CAMERA PERMISSION');
+  let startupStage = 'camera';
   try {
     if (!navigator.mediaDevices?.getUserMedia) throw new Error('Camera needs HTTPS and a modern browser.');
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 480 }, height: { ideal: 360 }, frameRate: { ideal: 18, max: 24 } } });
-    state.handStream = stream; video.srcObject = stream; await video.play();
-    video.classList.add('active'); setHandStatus('LOADING HAND TRACKER…', 'waiting');
+    if (!state.handStream) {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 480 }, height: { ideal: 360 }, frameRate: { ideal: 18, max: 24 } } });
+      state.handStream = stream; video.srcObject = stream; await video.play();
+    }
+    video.classList.add('active');
+    setHandStatus('CAMERA ON · LOADING HAND TRACKER', 'waiting');
+    setNote('Camera is on. Loading the hand tracking model; your video stays on this device.', 'CAMERA CONNECTED / TRACKER LOADING');
+    startupStage = 'tracker';
     const { FilesetResolver, HandLandmarker } = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.3/vision_bundle.mjs');
     const files = await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.2.3/wasm');
     const options = { baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task', delegate: 'GPU' }, runningMode: 'VIDEO', numHands: 1, minHandDetectionConfidence: .55, minTrackingConfidence: .5 };
@@ -444,13 +450,29 @@ async function startHandTracking() {
     setNote('Show one hand: open palm stirs, pinch moves heat, two fingers sample, fist sends a pulse.', 'HAND TRACKING / LIVE');
     state.handRaf = requestAnimationFrame(trackHands);
   } catch (error) {
-    stopHandTracking();
-    handButton.querySelector('.hand-label').textContent = 'RETRY CAMERA';
-    handButton.title = 'Camera unavailable. Retry camera access.';
-    const messages = { NotAllowedError: 'Camera permission was blocked. Allow it in your browser site settings.', NotFoundError: 'No camera was found on this device.', NotReadableError: 'The camera is busy in another app or browser tab.' };
-    const message = messages[error.name] || error.message || 'Camera could not start. Touch gestures still work.';
-    setHandStatus('CAMERA / TRACKER ERROR', 'error');
-    setNote(message, 'HAND TRACKING / UNAVAILABLE');
+    const cameraFailed = !state.handStream;
+    if (cameraFailed) {
+      stopHandTracking();
+      handButton.querySelector('.hand-label').textContent = 'RETRY CAMERA';
+      handButton.title = 'Camera unavailable. Retry camera access.';
+      setHandStatus('CAMERA COULD NOT START', 'error');
+    } else {
+      state.handActive = false;
+      if (state.handRaf) cancelAnimationFrame(state.handRaf); state.handRaf = 0;
+      if (state.handLandmarker) { try { state.handLandmarker.close(); } catch {} state.handLandmarker = null; }
+      handButton.classList.add('active');
+      handButton.querySelector('.hand-label').textContent = 'RETRY TRACKER';
+      handButton.title = 'Camera is on. Retry loading the hand tracker, or click to close camera.';
+      setHandStatus('CAMERA ON · TRACKER FAILED', 'error');
+    }
+    const messages = {
+      NotAllowedError: 'Camera permission was blocked. Allow camera access in browser site settings, then retry.',
+      NotFoundError: 'No camera was found on this device.',
+      NotReadableError: 'The camera is busy in another app or browser tab.',
+      SecurityError: 'This page is not allowed to use the camera. Open the HTTPS site directly and allow camera access.',
+    };
+    const message = messages[error.name] || error.message || (startupStage === 'tracker' ? 'Camera is working, but the hand tracker could not load. Check your connection and retry.' : 'Camera could not start.');
+    setNote(`${message}${error.name ? ` (${error.name})` : ''}`, cameraFailed ? 'CAMERA / PERMISSION ERROR' : 'CAMERA CONNECTED / TRACKER UNAVAILABLE');
   } finally { state.handLoading = false; handButton.disabled = false; }
 }
 function stopHandTracking() {

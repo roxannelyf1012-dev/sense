@@ -1,27 +1,26 @@
-# Sensory / Serpent
+# SENSE — Experience the world through a rattlesnake
 
-A single-screen cinematic interpretation of rattlesnake thermal sensing. The opening moves from the supplied close-up scale and eye references into a dark red-and-white heat view, where a warm animal and flowing infrared cues respond to pointer or hand movement.
+A single-screen, full-viewport particle experience. The opening particles transform from a recognizable rattlesnake head into overlapping scale rows, a vertical-pupil eye and loreal pit, then flow into four interactive sensory states. No raster animal artwork is used in the live experience; every form is assembled from animated particles.
 
 ## Run locally
 
-Serve this folder from `localhost` or deploy it over HTTPS. Camera access is unavailable to pages opened directly as `file://`.
+Serve the project over localhost (camera access requires localhost or HTTPS):
 
 ```sh
 python -m http.server 8000
 ```
 
-Then visit <http://localhost:8000>.
+Open <http://localhost:8000>.
 
-## Interactions
+## Interaction
 
-- The scene transitions from scales to the loreal pit and then to a thermal interpretation. Select **ENTER THERMAL VIEW** to skip ahead or use the replay control to start over.
-- Move the pointer or touch the scene to follow the warm animal and heat trail.
-- Expand **FIELD NOTE** for a short explanation of infrared sensing.
-- Choose **OPEN CAMERA** to request camera permission. Open palm and pinch gestures move the heat target. The browser processes camera frames locally. Camera access requires HTTPS or localhost and an explicit browser permission.
-- If camera permission cannot be obtained, the status card reports the browser error. If only the hand tracker fails to load, the live camera preview remains available and can retry the tracker.
+- Select **INFRARED**, **CHEMICAL**, **VIBRATION**, or **SPATIAL** to morph the same particle field. Use keys `1` through `4` as an alternative.
+- Move the pointer to reveal the warm-blooded prey signature, bend the forked chemical trails, send vibration ripples, or explore environmental depth.
+- Open **FIELD NOTE** for one short explanation of the current sensory state.
+- Select **HAND TRACKING** to request camera access. The camera is only opened after a click and browser permission. Gestures switch sensory modes and move the field pointer; processing stays in the browser.
 
-The red and white thermal image is an artistic visualization; rattlesnakes detect infrared radiation with pit organs and do not see this human-style thermal palette.
+The palette is limited to white, red, and blue. Shapes and colors are an interpretive visualization of biological sensing, not a literal image of a snake's visual experience. Infrared detection occurs in specialized pit organs; chemical samples are collected by the forked tongue; ground-borne vibration contributes mechanical cues; spatial awareness integrates multiple environmental signals.
 
-## Deploy
+## Publish
 
-This is a static site with no build step. Publish the project root with GitHub Pages or a static hosting provider such as Vercel.
+Static site; publish the project root with GitHub Pages, Vercel, or another static host. Camera access requires HTTPS on a published site.

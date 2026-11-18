@@ -1,81 +1,75 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#08070e" />
-    <meta name="description" content="An immersive sensory experience inspired by the rattlesnake." />
-    <title>SENSE — Experience the world through a rattlesnake</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./styles.css" />
-    <script type="module" src="./main.js"></script>
-  </head>
-  <body>
-    <div class="grain" aria-hidden="true"></div>
-    <header class="topbar">
-      <a class="wordmark" href="#world" aria-label="SENSE home">S<span>·</span>E</a>
-      <nav aria-label="Main navigation"><a class="nav-link active" href="#world">THE WORLD</a><a class="nav-link" href="#anatomy">THE BODY</a></nav>
-      <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false"><span class="status-dot"></span><span class="motion-label">MOTION ON</span></button>
-    </header>
-
-    <main>
-      <section id="world" class="world-section" aria-labelledby="hero-title">
-        <canvas id="sense-canvas" aria-label="Interactive sensory visualization: move or tap to explore heat, infrared signals, chemical trails, and ground vibrations."></canvas>
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-line"></span> FIELD STUDY 01 / CROTALUS</p>
-          <h1 id="hero-title">S<span class="title-e">E</span>NSE</h1>
-          <p class="hero-subtitle">SEE BEYOND<br />WHAT YOU SEE.</p>
-          <p class="hero-caption">A different way of experiencing the world.</p>
-          <a class="enter-link" href="#anatomy"><span>ENTER THE SENSORY FIELD</span><span class="enter-arrow">↘</span></a>
-        </div>
-        <div class="scene-meta"><span>01 — 02</span><span class="meta-rule"></span><span>DESERT / AFTER DARK</span></div>
-        <div class="sound-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="sense-legend" aria-label="Sensory layers">
-          <button class="sense-chip is-active" data-sense="thermal"><span class="chip-index">01</span><span class="chip-icon heat-icon"></span><span>THERMAL</span><span class="chip-status">LIVE</span></button>
-          <button class="sense-chip is-active" data-sense="infrared"><span class="chip-index">02</span><span class="chip-icon infrared-icon"></span><span>INFRARED</span><span class="chip-status">LIVE</span></button>
-          <button class="sense-chip is-active" data-sense="chemical"><span class="chip-index">03</span><span class="chip-icon chemical-icon"></span><span>CHEMICAL</span><span class="chip-status">LIVE</span></button>
-          <button class="sense-chip is-active" data-sense="vibration"><span class="chip-index">04</span><span class="chip-icon vibration-icon"></span><span>VIBRATION</span><span class="chip-status">LIVE</span></button>
-        </div>
-        <button id="tongue-trigger" class="tongue-trigger" type="button"><span class="trigger-icon">⌁</span><span>FLICK TO SAMPLE</span><span class="trigger-key">TAP / CLICK</span></button>
-        <p class="interaction-hint">MOVE TO EXPLORE <span>·</span> TAP A HEAT SOURCE</p>
-        <div id="sense-tooltip" class="sense-tooltip" role="status" aria-live="polite" hidden></div>
-        <a class="scroll-cue" href="#anatomy" aria-label="Scroll to anatomy"><span>SCROLL TO FEEL</span><span class="scroll-line"></span></a>
-      </section>
-
-      <section id="anatomy" class="anatomy-section" aria-labelledby="anatomy-title">
-        <div class="anatomy-head">
-          <p class="eyebrow"><span class="eyebrow-line"></span> FIELD STUDY 02 / THE INSTRUMENT</p>
-          <div class="anatomy-title-row"><h2 id="anatomy-title">A BODY<br />BUILT TO <em>SENSE.</em></h2><p class="anatomy-intro">Every surface is an instrument.<br />Every movement, a question.</p></div>
-        </div>
-        <div class="anatomy-stage">
-          <div class="anatomy-aura aura-one"></div><div class="anatomy-aura aura-two"></div>
-          <svg class="snake-study" viewBox="0 0 900 420" role="img" aria-labelledby="snake-title snake-desc">
-            <title id="snake-title">Abstract rattlesnake anatomy</title><desc id="snake-desc">A glowing, coiled rattlesnake silhouette with interactive points for its pit organ, forked tongue, jaw, and body.</desc>
-            <defs>
-              <linearGradient id="snakeStroke" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fb8157"/><stop offset=".35" stop-color="#d751da"/><stop offset=".7" stop-color="#8a6cff"/><stop offset="1" stop-color="#4ae6d0"/></linearGradient>
-              <filter id="snakeGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="13" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <radialGradient id="bodyFill"><stop stop-color="#f86ca8" stop-opacity=".28"/><stop offset="1" stop-color="#7654e9" stop-opacity=".03"/></radialGradient>
-            </defs>
-            <path class="snake-halo" d="M766 218 C732 142 641 119 565 162 C489 205 501 305 423 322 C346 338 275 272 312 204 C351 133 469 149 468 222 C467 289 388 299 350 255 C316 216 355 179 394 193 C432 206 420 250 391 255 C366 259 356 238 370 224 C382 213 395 223 391 234 C389 240 382 241 379 237" fill="none"/>
-            <path class="snake-body" d="M766 218 C732 142 641 119 565 162 C489 205 501 305 423 322 C346 338 275 272 312 204 C351 133 469 149 468 222 C467 289 388 299 350 255 C316 216 355 179 394 193 C432 206 420 250 391 255 C366 259 356 238 370 224 C382 213 395 223 391 234 C389 240 382 241 379 237" fill="none"/>
-            <path class="snake-core" d="M766 218 C732 142 641 119 565 162 C489 205 501 305 423 322 C346 338 275 272 312 204 C351 133 469 149 468 222 C467 289 388 299 350 255 C316 216 355 179 394 193 C432 206 420 250 391 255 C366 259 356 238 370 224 C382 213 395 223 391 234 C389 240 382 241 379 237" fill="none"/>
-            <path class="head-shape" d="M753 194 Q791 190 805 211 Q793 230 763 235 L744 221Z"/>
-            <path class="head-detail" d="M779 205 Q791 202 798 211 M778 221 Q790 225 798 216"/>
-            <path class="tongue-study" d="M803 213 C825 211 833 202 849 197 M833 208 L844 221"/>
-            <g class="rattle"><path d="M379 237 Q366 231 360 239 Q354 247 364 251 Q373 254 379 247"/><path d="M365 239 Q359 235 354 242"/><path d="M359 242 Q353 239 349 246"/></g>
-            <circle class="anatomy-point" data-part="pit" cx="773" cy="209" r="8"/><circle class="anatomy-point" data-part="tongue" cx="835" cy="207" r="8"/><circle class="anatomy-point" data-part="jaw" cx="790" cy="227" r="8"/><circle class="anatomy-point" data-part="body" cx="480" cy="185" r="8"/>
-          </svg>
-          <div class="anatomy-label label-pit"><span>01 / PIT ORGAN</span><i></i></div>
-          <div class="anatomy-label label-tongue"><span>02 / FORKED TONGUE</span><i></i></div>
-          <div class="anatomy-label label-jaw"><span>03 / JAW & GROUND</span><i></i></div>
-          <div class="anatomy-label label-body"><span>04 / WHOLE-BODY VIBRATION</span><i></i></div>
-          <div class="anatomy-tooltip" id="anatomy-tooltip" role="status" aria-live="polite">Hover or tap a point to discover its sensory role.</div>
-          <p class="diagram-note">AN ABSTRACT INTERPRETATION OF SENSORY ANATOMY</p>
-        </div>
-        <footer class="page-footer"><a class="wordmark" href="#world">S<span>·</span>E</a><span>THE WORLD IS MORE THAN WHAT MEETS THE EYE.</span><a href="#world">BACK TO THE FIELD ↑</a></footer>
-      </section>
-    </main>
-  </body>
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#05070a"><meta name="description" content="An interactive particle exhibition exploring rattlesnake perception.">
+  <title>Sensory / Serpent — An exploration of rattlesnake perception</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css"><script type="module" src="./main.js"></script>
+</head>
+<body>
+  <canvas id="field" aria-label="Interactive particle visualization of rattlesnake sensory perception"></canvas>
+  <div class="vignette" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#intro" aria-label="Sensory Serpent home"><span class="brand-mark">S<span>·</span>S</span><span class="brand-name">FIELD NOTES <i> / </i> 01</span></a>
+    <nav class="nav" aria-label="Sensory modules">
+      <button class="nav-item active" data-scene="intro"><span>00</span> INTRO</button>
+      <button class="nav-item" data-scene="thermal"><span>01</span> THERMAL</button>
+      <button class="nav-item" data-scene="chemical"><span>02</span> CHEMICAL</button>
+      <button class="nav-item" data-scene="vibration"><span>03</span> VIBRATION</button>
+      <button class="nav-item" data-scene="spatial"><span>04</span> SPATIAL</button>
+    </nav>
+    <button class="motion" id="motion" aria-pressed="false"><span class="live-dot"></span><span>MOTION ON</span></button>
+  </header>
+  <main>
+    <section class="scene-copy intro-copy active" data-copy="intro">
+      <div class="eyebrow"><span class="eyebrow-line"></span> A NOCTURNAL FIELD STUDY <span class="eyebrow-index">36° 09′ N / 115° 08′ W</span></div>
+      <h1>SENSORY<br><span>/</span> SERPENT</h1>
+      <p class="dek">An exploration of rattlesnake perception</p>
+      <p class="intro-note">Discover how a rattlesnake experiences a world beyond human perception.</p>
+      <button class="action enter" data-go="thermal"><span>ENTER THE FIELD</span><b>↗</b></button>
+      <div class="micro-hint"><span class="cursor-glyph">✳</span> MOVE YOUR CURSOR TO AWAKEN THE PARTICLES</div>
+    </section>
+    <section class="scene-copy" data-copy="thermal">
+      <div class="eyebrow"><span class="eyebrow-line heat"></span> SENSORY SYSTEM <span class="eyebrow-index">01 / 04</span></div>
+      <h2>DETECTING<br>INVISIBLE <em>HEAT</em></h2>
+      <p class="dek">Thermal sensing</p>
+      <p class="body-copy">Specialized pit organs between the eyes and nostrils detect infrared radiation from warm objects. Thermal contrast can help a rattlesnake locate prey, even in darkness.</p>
+      <div class="fact-tags"><span>INFRARED RADIATION</span><span>THERMAL CONTRAST</span><span>LOREAL PIT ORGAN</span></div>
+      <p class="control-hint">DRAG THE WARM SOURCE <span>·</span> MOVE CLOSER TO THE PIT</p>
+    </section>
+    <section class="scene-copy" data-copy="chemical">
+      <div class="eyebrow"><span class="eyebrow-line scent"></span> SENSORY SYSTEM <span class="eyebrow-index">02 / 04</span></div>
+      <h2>FOLLOW THE<br>INVISIBLE <em>TRAIL</em></h2>
+      <p class="dek">Chemical sensing</p>
+      <p class="body-copy">A forked tongue collects chemical samples from the environment. The particles are delivered to the vomeronasal organ, where left and right samples help interpret a scent trail.</p>
+      <div class="fact-tags"><span>FORKED TONGUE</span><span>CHEMICAL PARTICLES</span><span>VOMERONASAL ORGAN</span></div>
+      <button class="action flick" id="flick"><span>TRIGGER TONGUE FLICK</span><b>⌁</b></button>
+    </section>
+    <section class="scene-copy" data-copy="vibration">
+      <div class="eyebrow"><span class="eyebrow-line ground"></span> SENSORY SYSTEM <span class="eyebrow-index">03 / 04</span></div>
+      <h2>FEEL IT<br>THROUGH THE <em>GROUND</em></h2>
+      <p class="dek">Vibration sensing</p>
+      <p class="body-copy">Rattlesnakes lack external ears. Ground-borne vibrations travel through the body and bones of the lower jaw, revealing movement nearby.</p>
+      <div class="fact-tags"><span>GROUND VIBRATION</span><span>JAW-BONE CONDUCTION</span><span>MECHANICAL SIGNALS</span></div>
+      <div class="intensity" role="group" aria-label="Vibration intensity"><span>INTENSITY</span><button data-level="1">LOW</button><button class="selected" data-level="2">MED</button><button data-level="3">HIGH</button></div>
+      <p class="control-hint">TAP OR CLICK THE GROUND TO SEND A PULSE</p>
+    </section>
+    <section class="scene-copy" data-copy="spatial">
+      <div class="eyebrow"><span class="eyebrow-line mix"></span> SENSORY SYSTEM <span class="eyebrow-index">04 / 04</span></div>
+      <h2>A WORLD<br>OF MANY <em>SIGNALS</em></h2>
+      <p class="dek">Multisensory integration</p>
+      <p class="body-copy">Thermal information, chemical clues, and ground vibrations overlap in one environment. Rattlesnakes combine these cues to interpret nearby objects, potential prey, and movement.</p>
+      <div class="fact-tags"><span>DIRECTION</span><span>DISTANCE</span><span>MOVEMENT</span></div>
+      <p class="control-hint">MOVE THROUGH THE SHARED SENSORY FIELD</p>
+    </section>
+    <aside class="field-label" aria-live="polite"><span class="label-dot"></span><span id="field-label">AN ENVIRONMENT, UNSEEN</span></aside>
+    <div class="scene-count"><span id="count-current">00</span><i></i> 04 <span class="count-caption">SENSORY SYSTEMS</span></div>
+    <button class="next-scene" id="next"><span>CONTINUE</span><b>↓</b></button>
+    <button class="did-you-know" id="facts-toggle"><span>+</span> DID YOU KNOW?</button>
+    <aside class="facts" id="facts" hidden><button class="facts-close" id="facts-close" aria-label="Close facts">×</button><span class="eyebrow">FIELD OBSERVATIONS</span><ol><li>Pit organs are specialized infrared-sensitive structures.</li><li>A forked tongue samples chemicals on two sides.</li><li>The vomeronasal organ processes chemical information.</li><li>Vibrations can reach the lower jaw through ground contact.</li><li>Rattlesnakes combine multiple sensory cues.</li><li>These abilities are especially useful in low light.</li></ol></aside>
+  </main>
+  <footer><span>AN INTERPRETIVE SCIENTIFIC VISUALIZATION</span><span>MOVE <i>·</i> LISTEN <i>·</i> FEEL</span><span>FIELD STUDY 01 — CROTALUS</span></footer>
+</body>
 </html>

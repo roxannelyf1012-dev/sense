@@ -2,74 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#05070a"><meta name="description" content="An interactive particle exhibition exploring rattlesnake perception.">
-  <title>Sensory / Serpent — An exploration of rattlesnake perception</title>
+  <meta name="theme-color" content="#030607"><meta name="description" content="An interactive particle field inspired by how rattlesnakes sense heat, chemical traces, and ground vibration.">
+  <title>Sensory / Serpent — A shared sensory field</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css"><script type="module" src="./main.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./overrides.css"><script type="module" src="./main.js"></script>
 </head>
 <body>
-  <canvas id="field" aria-label="Interactive particle visualization of rattlesnake sensory perception"></canvas>
-  <div class="vignette" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
+  <canvas id="field" aria-label="Interactive sensory world: move to disturb thermal particles, hold to sample chemical trails, tap to send vibrations, or drag a warm source."></canvas>
+  <div class="atmosphere" aria-hidden="true"></div>
   <header class="topbar">
-    <a class="brand" href="#intro" aria-label="Sensory Serpent home"><span class="brand-mark">S<span>·</span>S</span><span class="brand-name">FIELD NOTES <i> / </i> 01</span></a>
-    <nav class="nav" aria-label="Sensory modules">
-      <button class="nav-item active" data-scene="intro"><span>00</span> INTRO</button>
-      <button class="nav-item" data-scene="thermal"><span>01</span> THERMAL</button>
-      <button class="nav-item" data-scene="chemical"><span>02</span> CHEMICAL</button>
-      <button class="nav-item" data-scene="vibration"><span>03</span> VIBRATION</button>
-      <button class="nav-item" data-scene="spatial"><span>04</span> SPATIAL</button>
-    </nav>
-    <button class="motion" id="motion" aria-pressed="false"><span class="live-dot"></span><span>MOTION ON</span></button>
+    <a class="identity" href="#field" aria-label="Sensory Serpent field"><span class="sigil">S<span>/</span>S</span><span class="identity-name">SENSORY<br>SERPENT</span></a>
+    <div class="top-note"><span class="live"></span> A SHARED SENSORY FIELD <span class="top-divider">/</span> CROTALUS</div>
+    <button id="motion" class="motion" type="button" aria-pressed="false"><span class="motion-icon">Ⅱ</span><span>PAUSE FIELD</span></button>
   </header>
-  <main>
-    <section id="intro" class="scene-copy intro-copy active" data-copy="intro">
-      <div class="eyebrow"><span class="eyebrow-line"></span> A NOCTURNAL FIELD STUDY <span class="eyebrow-index">36° 09′ N / 115° 08′ W</span></div>
-      <h1>SENSORY<br><span>/</span> SERPENT</h1>
-      <p class="dek">An exploration of rattlesnake perception</p>
-      <p class="intro-note">Discover how a rattlesnake experiences a world beyond human perception.</p>
-      <button class="action enter" data-go="thermal"><span>ENTER THE FIELD</span><b>↗</b></button>
-      <div class="micro-hint"><span class="cursor-glyph">✳</span> MOVE YOUR CURSOR TO AWAKEN THE PARTICLES</div>
-    </section>
-    <section class="scene-copy" data-copy="thermal">
-      <div class="eyebrow"><span class="eyebrow-line heat"></span> SENSORY SYSTEM <span class="eyebrow-index">01 / 04</span></div>
-      <h2>DETECTING<br>INVISIBLE <em>HEAT</em></h2>
-      <p class="dek">Thermal sensing</p>
-      <p class="body-copy">Specialized pit organs between the eyes and nostrils detect infrared radiation from warm objects. Thermal contrast can help a rattlesnake locate prey, even in darkness.</p>
-      <div class="fact-tags"><span>INFRARED RADIATION</span><span>THERMAL CONTRAST</span><span>LOREAL PIT ORGAN</span><span>HEAT DETECTION</span></div>
-      <p class="control-hint">DRAG THE WARM SOURCE <span>·</span> MOVE CLOSER TO THE PIT</p>
-    </section>
-    <section class="scene-copy" data-copy="chemical">
-      <div class="eyebrow"><span class="eyebrow-line scent"></span> SENSORY SYSTEM <span class="eyebrow-index">02 / 04</span></div>
-      <h2>FOLLOW THE<br>INVISIBLE <em>TRAIL</em></h2>
-      <p class="dek">Chemical sensing</p>
-      <p class="body-copy">A forked tongue collects chemical samples from the environment. The particles are delivered to the vomeronasal organ, where left and right samples help interpret a scent trail.</p>
-      <div class="fact-tags"><span>FORKED TONGUE</span><span>CHEMICAL PARTICLES</span><span>VOMERONASAL ORGAN</span><span>SCENT TRACKING</span></div>
-      <button class="action flick" id="flick"><span>TRIGGER TONGUE FLICK</span><b>⌁</b></button>
-    </section>
-    <section class="scene-copy" data-copy="vibration">
-      <div class="eyebrow"><span class="eyebrow-line ground"></span> SENSORY SYSTEM <span class="eyebrow-index">03 / 04</span></div>
-      <h2>FEEL IT<br>THROUGH THE <em>GROUND</em></h2>
-      <p class="dek">Vibration sensing</p>
-      <p class="body-copy">Rattlesnakes lack external ears. Ground-borne vibrations travel through the body and bones of the lower jaw, revealing movement nearby.</p>
-      <div class="fact-tags"><span>GROUND VIBRATION</span><span>JAW-BONE CONDUCTION</span><span>MECHANICAL SIGNALS</span><span>ENVIRONMENTAL MOVEMENT</span></div>
-      <div class="intensity" role="group" aria-label="Vibration intensity"><span>INTENSITY</span><button data-level="1">LOW</button><button class="selected" data-level="2">MED</button><button data-level="3">HIGH</button></div>
-      <p class="control-hint">TAP OR CLICK THE GROUND TO SEND A PULSE</p>
-    </section>
-    <section class="scene-copy" data-copy="spatial">
-      <div class="eyebrow"><span class="eyebrow-line mix"></span> SENSORY SYSTEM <span class="eyebrow-index">04 / 04</span></div>
-      <h2>A WORLD<br>OF MANY <em>SIGNALS</em></h2>
-      <p class="dek">Multisensory integration</p>
-      <p class="body-copy">Thermal information, chemical clues, and ground vibrations overlap in one environment. Rattlesnakes combine these cues to interpret nearby objects, potential prey, and movement.</p>
-      <div class="fact-tags"><span>ENVIRONMENTAL CUES</span><span>DIRECTION</span><span>DISTANCE</span><span>MOVEMENT</span></div>
-      <p class="control-hint">MOVE THROUGH THE SHARED SENSORY FIELD</p>
-    </section>
-    <aside class="field-label" aria-live="polite"><span class="label-dot"></span><span id="field-label">AN ENVIRONMENT, UNSEEN</span></aside>
-    <div class="scene-count"><span id="count-current">00</span><i></i> 04 <span class="count-caption">SENSORY SYSTEMS</span></div>
-    <button class="next-scene" id="next"><span>CONTINUE</span><b>↓</b></button>
-    <button class="did-you-know" id="facts-toggle"><span>+</span> DID YOU KNOW?</button>
-    <aside class="facts" id="facts" hidden><button class="facts-close" id="facts-close" aria-label="Close facts">×</button><span class="eyebrow">FIELD OBSERVATIONS</span><ol><li>Pit organs are specialized infrared-sensitive structures.</li><li>A forked tongue samples chemicals on two sides.</li><li>The vomeronasal organ processes chemical information.</li><li>Vibrations can reach the lower jaw through ground contact.</li><li>Rattlesnakes combine multiple sensory cues.</li><li>These abilities are especially useful in low light.</li></ol></aside>
-  </main>
-  <footer><span>AN INTERPRETIVE SCIENTIFIC VISUALIZATION</span><span>MOVE <i>·</i> LISTEN <i>·</i> FEEL</span><span>FIELD STUDY 01 — CROTALUS</span></footer>
+
+  <aside class="side-panel" aria-label="About the sensory field">
+    <div class="intro-block">
+      <p class="kicker">AN INTERACTIVE FIELD STUDY</p>
+      <h1>Feel the<br>unseen <i>world.</i></h1>
+      <p class="intro-text">One animal. Many signals. Explore how heat, chemical traces, and ground movement meet in a rattlesnake’s surroundings.</p>
+    </div>
+
+    <div class="signals-heading"><span>THREE KINDS OF INFORMATION</span></div>
+    <div class="signal-list">
+      <div class="signal"><i class="signal-dot heat-dot"></i><span><b>Heat</b><small>Infrared warms a sensitive pit membrane.</small></span></div>
+      <div class="signal"><i class="signal-dot scent-dot"></i><span><b>Chemistry</b><small>A forked tongue gathers chemical samples.</small></span></div>
+      <div class="signal"><i class="signal-dot ground-dot"></i><span><b>Vibration</b><small>Ground motion reaches the inner ear through the jaw apparatus.</small></span></div>
+    </div>
+
+    <div class="gesture-heading"><span>TRY A GESTURE</span><span>TO CHANGE THE FIELD</span></div>
+    <div class="gesture-list">
+      <div class="gesture"><span class="gesture-icon move-icon">↗</span><span><b>Move</b><small>stir the sensory field</small></span></div>
+      <div class="gesture"><span class="gesture-icon hold-icon">···</span><span><b>Press &amp; hold</b><small>sample two scent streams</small></span></div>
+      <div class="gesture"><span class="gesture-icon tap-icon">⌁</span><span><b>Tap / click</b><small>send a vibration pulse</small></span></div>
+      <div class="gesture"><span class="gesture-icon drag-icon">⤧</span><span><b>Drag amber source</b><small>move the warm signal</small></span></div>
+    </div>
+
+    <div class="pulse-setting"><span>GROUND PULSE</span><div class="levels"><button type="button" data-level="1">LOW</button><button type="button" data-level="2" class="selected">MID</button><button type="button" data-level="3">HIGH</button></div></div>
+
+    <div class="active-info" aria-live="polite"><span class="info-dot"></span><p id="interaction-note">The field is listening. Choose a gesture to begin.</p></div>
+    <div class="panel-foot"><span>AN INTERPRETATION, NOT A LITERAL VIEW</span><button id="sources-toggle" type="button">RESEARCH <span>↗</span></button></div>
+  </aside>
+
+  <section class="field-readout"><span class="readout-dot"></span><span id="readout">HEAT · CHEMISTRY · GROUND MOVEMENT</span></section>
+  <div class="field-coordinates" aria-hidden="true"><span>DESERT NIGHT</span><i></i><span>36° 09′ N</span></div>
+  <div class="field-hint" id="field-hint"><span class="hint-cursor">✳</span> ALL THREE SIGNALS ARE PRESENT</div>
+
+  <aside class="sources" id="sources" hidden aria-label="Research sources">
+    <button type="button" id="sources-close" aria-label="Close sources">×</button><span class="source-kicker">RESEARCH NOTES</span>
+    <a href="https://www.nature.com/articles/nature08943" target="_blank" rel="noreferrer">Gracheva et al. · Molecular basis of infrared detection · Nature (2010) ↗</a>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/18298279/" target="_blank" rel="noreferrer">Parker et al. · Forked tongue and edge detection · J. Comp. Psychol. (2008) ↗</a>
+    <a href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.100.048701" target="_blank" rel="noreferrer">Friedel et al. · Ground-borne vibration localization · PRL (2008) ↗</a>
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9928108/" target="_blank" rel="noreferrer">Christensen et al. · Snake responses to airborne and groundborne sounds (2023) ↗</a>
+    <p>Infrared cues are received as thermal signals; the visualization does not suggest a snake sees a human-style thermal image. Forked-tongue tracking mechanisms remain under study.</p>
+  </aside>
+
+  <div class="field-stamp"><span class="stamp-ring">FIELD<br>STUDY</span><span>NO. 01<br>PERCEPTION</span></div>
 </body>
 </html>

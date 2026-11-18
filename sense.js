@@ -143,8 +143,10 @@ function resize() {
   state.w = innerWidth; state.h = innerHeight; state.dpr = Math.min(devicePixelRatio || 1, innerWidth < 700 ? 1 : 1.35);
   canvas.width = Math.round(state.w * state.dpr); canvas.height = Math.round(state.h * state.dpr); ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
   const count = Math.min(innerWidth < 700 ? 2400 : 4200, Math.max(innerWidth < 700 ? 1500 : 2300, Math.floor(state.w * state.h / (innerWidth < 700 ? 390 : 310))));
-  state.particles = Array.from({ length: count }, (_, i) => ({ x: Math.random(), y: Math.random(), vx: 0, vy: 0, tx: .5, ty: .5, phase: random(0, 6.28), size: Math.random() < .94 ? random(.38, 1.08) : random(1.1, 1.65), color: 0, depth: Math.random(), seed: i }));
+  state.particles = Array.from({ length: count }, (_, i) => ({ x: Math.random(), y: Math.random(), vx: 0, vy: 0, tx: .5, ty: .5, phase: random(0, 6.28), size: Math.random() < .91 ? random(.68, 1.35) : random(1.4, 1.9), color: 0, depth: Math.random(), seed: i }));
   morph();
+  // Start in the first biological form so the canvas is visibly alive on its very first frame.
+  for (const p of state.particles) { p.x = p.tx + random(-.009, .009); p.y = p.ty + random(-.009, .009); }
 }
 function addPulse(x, y, power = 1) { state.pulses.push({ x, y, at: performance.now(), power }); if (state.pulses.length > 5) state.pulses.shift(); }
 function render(now) {
@@ -176,7 +178,7 @@ function render(now) {
     p.vx = (p.vx + ax * dt) * .88; p.vy = (p.vy + ay * dt) * .88;
     p.x += p.vx * dt; p.y += p.vy * dt;
     const hotDistance = Math.hypot(p.tx - state.pointer.x, p.ty - state.pointer.y);
-    let alpha = .32 + p.depth * .4 + near * .5;
+    let alpha = .58 + p.depth * .3 + near * .5;
     let size = p.size * (1 + near * .9);
     if (state.mode === 'infrared' && p.color === 1) { const proximity = Math.max(0, 1 - hotDistance / (.16 + near * .18)); alpha += proximity * (.35 + near * .75); size *= 1 + proximity * (.5 + near); }
     if (state.mode === 'chemical' && p.color === 2) alpha += .15;

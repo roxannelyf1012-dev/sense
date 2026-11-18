@@ -10,6 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./sense.css">
   <script type="module" src="./sense.js"></script>
+  <script>
+    window.addEventListener('error', function (event) {
+      if (!event.message && event.target?.tagName !== 'SCRIPT') return;
+      const reveal = function () {
+        const status = document.getElementById('status');
+        if (status) { status.hidden = false; status.textContent = 'PARTICLE FIELD COULD NOT START. Serve the SENSE folder over localhost or HTTPS, then reload.'; }
+      };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', reveal, { once: true }); else reveal();
+    }, true);
+  </script>
 </head>
 <body>
   <main class="world" id="world">

@@ -368,7 +368,7 @@ function trackHands(now) {
 async function startHandTracking() {
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('Camera access needs a secure HTTPS page or localhost.');
   state.handLoading = true; handButton.disabled = true;
-  handButton.querySelector('.hand-label').textContent = 'STARTING CAMERA…';
+  handButton.querySelector('.hand-label').textContent = 'STARTING…';
   setNote('Waiting for camera permission. Video stays on this device.', 'HAND TRACKING / CAMERA PERMISSION');
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } } });
@@ -380,14 +380,14 @@ async function startHandTracking() {
     catch { options.baseOptions.delegate = 'CPU'; state.handLandmarker = await HandLandmarker.createFromOptions(files, options); }
     state.handActive = true; state.handGesture = ''; state.handCandidate = '';
     video.classList.add('active'); handButton.classList.add('active');
-    handButton.querySelector('.hand-label').textContent = 'HAND GESTURES ON';
-    handButton.querySelector('i').textContent = 'CAMERA LIVE';
+    handButton.querySelector('.hand-label').textContent = 'HAND CONTROL ON';
+    handButton.title = 'Stop hand tracking and close the camera';
     setNote('Show one hand: open palm stirs, pinch moves heat, two fingers sample, fist sends a pulse.', 'HAND TRACKING / LIVE');
     requestAnimationFrame(trackHands);
   } catch (error) {
     stopHandTracking();
-    handButton.querySelector('.hand-label').textContent = 'ENABLE HAND GESTURES';
-    handButton.querySelector('i').textContent = 'CAMERA IS LOCAL';
+    handButton.querySelector('.hand-label').textContent = 'OPEN CAMERA';
+    handButton.title = 'Allow camera access for hand gestures';
     setNote(error.message || 'Camera could not start. Touch gestures still work.', 'HAND TRACKING / UNAVAILABLE');
   } finally { state.handLoading = false; handButton.disabled = false; }
 }
@@ -401,13 +401,21 @@ function stopHandTracking() {
 handButton.addEventListener('click', () => {
   if (state.handLoading) return;
   if (state.handActive) {
-    stopHandTracking(); handButton.querySelector('.hand-label').textContent = 'ENABLE HAND GESTURES';
-    handButton.querySelector('i').textContent = 'CAMERA IS LOCAL';
+    stopHandTracking(); handButton.querySelector('.hand-label').textContent = 'OPEN CAMERA';
+    handButton.title = 'Allow camera access for hand gestures';
     setNote('Hand tracking stopped. Mouse and touch gestures remain available.', 'HEAT · CHEMISTRY · GROUND MOVEMENT');
   } else startHandTracking();
 });
 
 const motionButton = document.querySelector('#motion');
+const panelToggle = document.querySelector('#panel-toggle');
+panelToggle.addEventListener('click', () => {
+  const collapsed = document.querySelector('.side-panel').classList.toggle('collapsed');
+  panelToggle.setAttribute('aria-expanded', String(!collapsed));
+  panelToggle.title = collapsed ? 'Expand field notes' : 'Collapse information panel';
+  panelToggle.querySelector('.panel-toggle-icon').textContent = collapsed ? '›' : '‹';
+  panelToggle.querySelector('.panel-toggle-label').textContent = collapsed ? 'EXPAND FIELD NOTES' : 'COLLAPSE FIELD NOTES';
+});
 function setMotion(on) {
   state.motion = on; motionButton.setAttribute('aria-pressed', String(!on));
   motionButton.querySelector('span:last-child').textContent = on ? 'PAUSE FIELD' : 'RESUME FIELD';

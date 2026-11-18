@@ -5,8 +5,8 @@
   <meta name="theme-color" content="#030607"><meta name="description" content="An interactive particle field inspired by how rattlesnakes sense heat, chemical traces, and ground vibration.">
   <title>Sensory / Serpent — A shared sensory field</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./overrides.css"><script type="module" src="./main.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./overrides.css"><link rel="stylesheet" href="./ui.css"><script type="module" src="./main.js"></script>
 </head>
 <body>
   <canvas id="field" aria-label="Interactive sensory world: move to disturb thermal particles, hold to sample chemical trails, tap to send vibrations, or drag a warm source."></canvas>
@@ -15,10 +15,13 @@
   <header class="topbar">
     <a class="identity" href="#field" aria-label="Sensory Serpent field"><span class="sigil">S<span>/</span>S</span><span class="identity-name">SENSORY<br>SERPENT</span></a>
     <div class="top-note"><span class="live"></span> A SHARED SENSORY FIELD <span class="top-divider">/</span> CROTALUS</div>
+    <button class="topbar-camera" id="hand-toggle" type="button" title="Allow camera access for hand gestures"><span class="camera-glyph">◎</span><span class="hand-label">OPEN CAMERA</span></button>
     <button id="motion" class="motion" type="button" aria-pressed="false"><span class="motion-icon">Ⅱ</span><span>PAUSE FIELD</span></button>
   </header>
 
   <aside class="side-panel" aria-label="About the sensory field">
+    <button class="panel-toggle" id="panel-toggle" type="button" aria-expanded="true" aria-controls="panel-content" title="Collapse information panel"><span class="panel-toggle-icon">‹</span><span class="panel-toggle-label">COLLAPSE FIELD NOTES</span></button>
+    <div id="panel-content" class="panel-content">
     <div class="intro-block">
       <p class="kicker">AN INTERACTIVE FIELD STUDY</p>
       <h1>Feel the<br>unseen <i>world.</i></h1>
@@ -39,13 +42,14 @@
       <div class="gesture"><span class="gesture-icon tap-icon">⌁</span><span><b>Tap / click</b><small>send a vibration pulse</small></span></div>
       <div class="gesture"><span class="gesture-icon drag-icon">⤧</span><span><b>Drag amber source</b><small>move the warm signal</small></span></div>
     </div>
-    <button class="hand-toggle" id="hand-toggle" type="button"><span class="camera-glyph">◎</span><span class="hand-label">ENABLE HAND GESTURES</span><i>CAMERA IS LOCAL</i></button>
     <p class="hand-legend">OPEN PALM / STIR <i>·</i> PINCH / HEAT <i>·</i> TWO FINGERS / SAMPLE <i>·</i> FIST / PULSE</p>
+    <p class="camera-note">CAMERA STAYS OFF UNTIL YOU ALLOW IT.</p>
 
     <div class="pulse-setting"><span>GROUND PULSE</span><div class="levels"><button type="button" data-level="1">LOW</button><button type="button" data-level="2" class="selected">MID</button><button type="button" data-level="3">HIGH</button></div></div>
 
     <div class="active-info" aria-live="polite"><span class="info-dot"></span><p id="interaction-note">The field is listening. Choose a gesture to begin.</p></div>
     <div class="panel-foot"><span>AN INTERPRETATION, NOT A LITERAL VIEW</span><button id="sources-toggle" type="button">RESEARCH <span>↗</span></button></div>
+    </div>
   </aside>
 
   <section class="field-readout"><span class="readout-dot"></span><span id="readout">HEAT · CHEMISTRY · GROUND MOVEMENT</span></section>

@@ -81,7 +81,7 @@ function pointerAt(event){
   state.x=x;state.y=y;state.mouseX=x;state.mouseY=y;state.active=true;state.intensity=1;
   document.documentElement.style.setProperty('--scan-x',`${event.clientX}px`);
   document.documentElement.style.setProperty('--scan-y',`${event.clientY}px`);
-  const radius=Math.min(210,Math.max(125,state.h*.205));state.scanRadius=radius/state.h;document.documentElement.style.setProperty('--scan-radius',`${radius}px`);
+  const radius=Math.min(168,Math.max(100,state.h*.164));state.scanRadius=radius/state.h;document.documentElement.style.setProperty('--scan-radius',`${radius}px`);
   installation.classList.add('scanning');
   const nearPit=Math.hypot((x-.54)*state.w,(y-.26)*state.h)<radius;
   scanLabel.innerHTML=nearPit?'<span></span> LOREAL PIT / HEAT CUE':'<span></span> THERMAL FIELD / SCANNING';
@@ -209,7 +209,7 @@ function spawnTrail(x,y,amount=5,directionX=0,directionY=0,startX=x,startY=y){
   const s=experienceState,density={LOW:.7,MID:1,HIGH:1.35}[s.settings.density],motion=s.settings.movement==='FAST'?1.3:.62;
   s.residueUntil=performance.now()+s.settings.trail*3000;
   const magnitude=Math.hypot(directionX,directionY),tangentX=magnitude>.5?directionX/magnitude:1,tangentY=magnitude>.5?directionY/magnitude:0,count=Math.max(3,Math.round(amount*density));
-  for(let i=0;i<count;i++){const along=magnitude>.5?Math.random():1,angle=Math.random()*Math.PI*2,radius=8+Math.sqrt(Math.random())*64,radialX=Math.cos(angle),radialY=Math.sin(angle),xAlong=startX+directionX*along+radialX*radius,yAlong=startY+directionY*along+radialY*radius,outward=randomBetween(7,24)*motion,swirl=randomBetween(-10,10)*motion,wake=randomBetween(-4,8)*motion;s.trail.push({x:xAlong,y:yAlong,vx:radialX*outward-tangentY*swirl+tangentX*wake,vy:radialY*outward+tangentX*swirl+tangentY*wake,age:0,life:s.settings.trail*randomBetween(.9,1.12),size:randomBetween(.72,1.18),heat:1});}
+  for(let i=0;i<count;i++){const along=magnitude>.5?Math.random():1,angle=Math.random()*Math.PI*2,radius=6.4+Math.sqrt(Math.random())*51.2,radialX=Math.cos(angle),radialY=Math.sin(angle),xAlong=startX+directionX*along+radialX*radius,yAlong=startY+directionY*along+radialY*radius,outward=randomBetween(7,24)*motion,swirl=randomBetween(-10,10)*motion,wake=randomBetween(-4,8)*motion;s.trail.push({x:xAlong,y:yAlong,vx:radialX*outward-tangentY*swirl+tangentX*wake,vy:radialY*outward+tangentX*swirl+tangentY*wake,age:0,life:s.settings.trail*randomBetween(.9,1.12),size:randomBetween(.72,1.18),heat:1});}
   const maxTrailPoints=Math.round(1800*density);if(s.trail.length>maxTrailPoints)s.trail.splice(0,s.trail.length-maxTrailPoints);
 }
 function pointerMove(event){
@@ -275,7 +275,7 @@ function drawAmbient(ctx,s,dt,time){
   const m=s.mouse,w=s.width,h=s.height,motion=s.settings.movement==='FAST'?1.7:.58,size={S:.68,M:1,L:1.42}[s.settings.size];
   for(const p of s.ambient){
     const depth=1.35-p.z*.45,px=p.x+(p.x-w*.5)*(1-depth)*.14+(m.seen?(m.x-w*.5)*.009*(1.9-p.z):0),py=p.y+(p.y-h*.5)*(1-depth)*.14+(m.seen?(m.y-h*.5)*.009*(1.9-p.z):0);
-    const dx=px-m.x,dy=py-m.y,d=Math.hypot(dx,dy),force=d<195?(1-d/195):0;
+    const dx=px-m.x,dy=py-m.y,d=Math.hypot(dx,dy),force=d<156?(1-d/156):0;
     if(force>.01){p.vx+=dx/(d||1)*force*16*motion*dt;p.vy+=dy/(d||1)*force*16*motion*dt;}
     p.vx+=Math.sin(time*.24+p.phase)*.018*motion*dt;p.vy+=Math.cos(time*.19+p.phase)*.016*motion*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;const friction=Math.pow(.994,dt*60);p.vx*=friction;p.vy*=friction;
     if(p.x<-15)p.x=w+15;if(p.x>w+15)p.x=-15;if(p.y<-15)p.y=h+15;if(p.y>h+15)p.y=-15;
@@ -302,7 +302,7 @@ function drawSonars(ctx,s){
   ctx.globalAlpha=1;
 }
 function drawPrey(ctx,s,dt,time){
-  const p=s.prey,m=s.mouse,scale=Math.min(s.width*.0975,s.height*.10875),px=clamp(p.x*s.width,scale,s.width-scale),py=p.y*s.height,senseX=m.heatX>-500?m.heatX:m.x,senseY=m.heatY>-500?m.heatY:m.y,distance=Math.hypot(senseX-px,senseY-py),proximity=1-smoothstep(35,480,distance),pulse=heartbeatAt(time),peak=.62+.38*pulse,thermal={LOW:.64,MID:1,HIGH:1.38}[s.settings.thermal],particleSize={S:.58,M:.78,L:1.08}[s.settings.size],motion=s.settings.movement==='FAST'?1.35:.52;
+  const p=s.prey,m=s.mouse,scale=Math.min(s.width*.14625,s.height*.163125),px=clamp(p.x*s.width,scale,s.width-scale),py=p.y*s.height,senseX=m.heatX>-500?m.heatX:m.x,senseY=m.heatY>-500?m.heatY:m.y,distance=Math.hypot(senseX-px,senseY-py),proximity=1-smoothstep(35,480,distance),pulse=heartbeatAt(time),peak=.62+.38*pulse,thermal={LOW:.64,MID:1,HIGH:1.38}[s.settings.thermal],particleSize={S:.58,M:.78,L:1.08}[s.settings.size],motion=s.settings.movement==='FAST'?1.35:.52;
   if(performance.now()>p.scatteredUntil){p.x+=(p.targetX-p.x)*Math.min(1,dt*1.7);p.y+=(p.targetY-p.y)*Math.min(1,dt*1.7);}
   const isFast=proximity>.3&&m.speed>720&&performance.now()>p.scatteredUntil&&!s.ended;
   if(isFast)movePrey();

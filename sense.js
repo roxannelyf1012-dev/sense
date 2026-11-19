@@ -145,7 +145,7 @@ function loadMouseReference(){
           if(luma<78)continue;
           let hash=(x*374761393+y*668265263)>>>0;hash=Math.imul(hash^(hash>>>13),1274126177)>>>0;hash^=hash>>>16;
           const tone=clamp((luma-78)/177,0,1);
-          candidates.push({x:(x-384)/360,y:(y-270)/360,tone,phase:(hash%100000)/100000*Math.PI*2,order:hash/4294967295});
+          candidates.push({x:(x-384)/360,y:(y-270)/360,tone,phase:(hash%100000)/100000*Math.PI*2,order:hash/4294967295,size:.72+((hash>>>8)%1000)/1000*.46});
         }}
         candidates.sort((a,b)=>a.order-b.order);mouseReferenceCandidates=candidates;
       }catch(error){mouseReferenceCandidates=[];}
@@ -159,12 +159,12 @@ function makePreyPoints(){
   const density=experienceState.settings.density;
   if(mouseReferenceCandidates.length){
     const targetCount=Math.min({LOW:2800,MID:5600,HIGH:8000}[density],mouseReferenceCandidates.length),stride=mouseReferenceCandidates.length/targetCount,points=[];
-    for(let i=0;i<targetCount;i++){const source=mouseReferenceCandidates[Math.floor(i*stride)];if(source)points.push({x:source.x,y:source.y,tone:source.tone,category:source.tone>.72?1:0,phase:source.phase,depth:Math.sin(source.phase+source.x*5+source.y*7)});}
-    const spillCount=Math.round(points.length*.56);for(let i=0;i<spillCount;i++){const source=points[Math.floor(i*points.length/spillCount)],radius=Math.hypot(source.x,source.y),angle=Math.atan2(source.y,source.x),spread=randomBetween(1.035,1.22);points.push({x:Math.cos(angle)*radius*spread,y:Math.sin(angle)*radius*spread,tone:source.tone*.78,category:source.category,phase:source.phase+randomBetween(-.5,.5),depth:source.depth,spill:true});}
+    for(let i=0;i<targetCount;i++){const source=mouseReferenceCandidates[Math.floor(i*stride)];if(source)points.push({x:source.x,y:source.y,tone:source.tone,category:source.tone>.72?1:0,phase:source.phase,depth:Math.sin(source.phase+source.x*5+source.y*7),size:source.size});}
+    const spillCount=Math.round(points.length*.56);for(let i=0;i<spillCount;i++){const source=points[Math.floor(i*points.length/spillCount)],radius=Math.hypot(source.x,source.y),angle=Math.atan2(source.y,source.x),spread=randomBetween(1.035,1.22);points.push({x:Math.cos(angle)*radius*spread,y:Math.sin(angle)*radius*spread,tone:source.tone*.78,category:source.category,phase:source.phase+randomBetween(-.5,.5),depth:source.depth,size:source.size,spill:true});}
     return points;
   }
   const points=[],densityFactor={LOW:.62,MID:1,HIGH:1.55}[experienceState.settings.density];
-  const ellipse=(count,cx,cy,rx,ry,category)=>{for(let i=0;i<Math.round(count*densityFactor);i++){const angle=Math.random()*Math.PI*2;const radius=Math.sqrt(Math.random());points.push({x:cx+Math.cos(angle)*rx*radius,y:cy+Math.sin(angle)*ry*radius,category,phase:Math.random()*Math.PI*2,depth:randomBetween(-1,1)});}};
+  const ellipse=(count,cx,cy,rx,ry,category)=>{for(let i=0;i<Math.round(count*densityFactor);i++){const angle=Math.random()*Math.PI*2;const radius=Math.sqrt(Math.random());points.push({x:cx+Math.cos(angle)*rx*radius,y:cy+Math.sin(angle)*ry*radius,category,phase:Math.random()*Math.PI*2,depth:randomBetween(-1,1),size:randomBetween(.72,1.18)});}};
   // Compact mouse silhouette: rounded haunches, a tapered head, round ears, and a fine curved tail.
   ellipse(300,-.08,.08,.58,.39,0);
   ellipse(122,.42,-.12,.34,.29,1);
@@ -172,18 +172,18 @@ function makePreyPoints(){
   ellipse(38,.26,-.42,.16,.16,1);
   ellipse(22,.50,-.39,.105,.11,1);
   ellipse(14,.81,-.11,.055,.055,2);
-  for(let i=0,count=Math.round(84*densityFactor);i<count;i++){const t=i/Math.max(1,count-1);points.push({x:-.55-t*.94,y:.07+Math.sin(t*Math.PI*.72)*.34+t*.08,category:2,phase:t*6,depth:randomBetween(-.35,.35)});}
-  for(const foot of [[-.42,.31],[-.08,.36],[.34,.13],[.58,.10]])for(let i=0,count=Math.round(14*densityFactor);i<count;i++){const t=i/Math.max(1,count-1);points.push({x:foot[0]+t*.14,y:foot[1]+t*.22,category:2,phase:t*4,depth:randomBetween(-.5,.5)});}
-  for(let i=0,count=Math.round(20*densityFactor);i<count;i++){const t=i/Math.max(1,count-1);points.push({x:.73+t*.19,y:-.025+Math.sin(t*Math.PI)*.055,category:1,phase:t*4,depth:randomBetween(-.6,.6)});}
+  for(let i=0,count=Math.round(84*densityFactor);i<count;i++){const t=i/Math.max(1,count-1);points.push({x:-.55-t*.94,y:.07+Math.sin(t*Math.PI*.72)*.34+t*.08,category:2,phase:t*6,depth:randomBetween(-.35,.35),size:randomBetween(.72,1.18)});}
+  for(const foot of [[-.42,.31],[-.08,.36],[.34,.13],[.58,.10]])for(let i=0,count=Math.round(14*densityFactor);i<count;i++){const t=i/Math.max(1,count-1);points.push({x:foot[0]+t*.14,y:foot[1]+t*.22,category:2,phase:t*4,depth:randomBetween(-.5,.5),size:randomBetween(.72,1.18)});}
+  for(let i=0,count=Math.round(20*densityFactor);i<count;i++){const t=i/Math.max(1,count-1);points.push({x:.73+t*.19,y:-.025+Math.sin(t*Math.PI)*.055,category:1,phase:t*4,depth:randomBetween(-.6,.6),size:randomBetween(.72,1.18)});}
   return points;
 }
 function makeHeatFieldPoints(){
   const count=Math.round(520*{LOW:.62,MID:1,HIGH:1.55}[experienceState.settings.density]);
-  return Array.from({length:count},(_,index)=>({angle:Math.random()*Math.PI*2,layer:Math.sqrt(index/count),phase:Math.random()*Math.PI*2,drift:randomBetween(-.72,.72),tone:Math.random()}));
+  return Array.from({length:count},(_,index)=>({angle:Math.random()*Math.PI*2,layer:Math.sqrt(index/count),phase:Math.random()*Math.PI*2,drift:randomBetween(-.72,.72),tone:Math.random(),size:randomBetween(.72,1.18)}));
 }
 function makeHeatCorePoints(){
   const count=Math.round(82*{LOW:.62,MID:1,HIGH:1.55}[experienceState.settings.density]);
-  return Array.from({length:count},()=>{const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random());return{x:Math.cos(angle)*radius*.34,y:Math.sin(angle)*radius*.25,phase:Math.random()*Math.PI*2};});
+  return Array.from({length:count},()=>{const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random());return{x:Math.cos(angle)*radius*.34,y:Math.sin(angle)*radius*.25,phase:Math.random()*Math.PI*2,size:randomBetween(.72,1.18)};});
 }
 function makePrey(){return{x:randomBetween(.56,.78),y:randomBetween(.34,.67),targetX:.72,targetY:.52,points:makePreyPoints(),fieldPoints:makeHeatFieldPoints(),corePoints:makeHeatCorePoints(),reveal:0,scatteredUntil:0,ready:false,steady:0};}
 function resizeExperience(){
@@ -302,19 +302,18 @@ function drawSonars(ctx,s){
   ctx.globalAlpha=1;
 }
 function drawPrey(ctx,s,dt,time){
-  const p=s.prey,m=s.mouse,scale=Math.min(s.width*.14625,s.height*.163125),px=clamp(p.x*s.width,scale,s.width-scale),py=p.y*s.height,senseX=m.heatX>-500?m.heatX:m.x,senseY=m.heatY>-500?m.heatY:m.y,distance=Math.hypot(senseX-px,senseY-py),proximity=1-smoothstep(35,480,distance),pulse=heartbeatAt(time),peak=.62+.38*pulse,thermal={LOW:.64,MID:1,HIGH:1.38}[s.settings.thermal],particleSize={S:.58,M:.78,L:1.08}[s.settings.size],motion=s.settings.movement==='FAST'?1.35:.52;
+  const p=s.prey,m=s.mouse,scale=Math.min(s.width*.14625,s.height*.163125),px=clamp(p.x*s.width,scale,s.width-scale),py=p.y*s.height,senseX=m.heatX>-500?m.heatX:m.x,senseY=m.heatY>-500?m.heatY:m.y,distance=Math.hypot(senseX-px,senseY-py),proximity=1-smoothstep(35,480,distance),pulse=heartbeatAt(time),peak=.62+.38*pulse,thermal={LOW:.64,MID:1,HIGH:1.38}[s.settings.thermal],particleSize={S:.8,M:1.05,L:1.2}[s.settings.size],motion=s.settings.movement==='FAST'?1.35:.52;
   if(performance.now()>p.scatteredUntil){p.x+=(p.targetX-p.x)*Math.min(1,dt*1.7);p.y+=(p.targetY-p.y)*Math.min(1,dt*1.7);}
   const isFast=proximity>.3&&m.speed>720&&performance.now()>p.scatteredUntil&&!s.ended;
   if(isFast)movePrey();
   const reveal=smoothstep(.015,.62,proximity)*(.65+.35*peak);p.reveal+=(reveal-p.reveal)*Math.min(1,dt*8);
   if(p.reveal>.025){const signal=clamp(p.reveal*thermal,0,1),breath=1+.025*pulse+.008*Math.sin(time*.8);
-    for(const field of p.fieldPoints){const angle=field.angle+time*field.drift*motion+Math.sin(time*.62+field.phase)*.055,organic=1+Math.sin(field.angle*2+field.phase+time*.48)*.055,radius=1+field.layer*.8+Math.sin(time*.92+field.phase)*.035;const x=px+Math.cos(angle)*scale*radius*organic*breath,y=py+Math.sin(angle)*scale*(.22+field.layer*.32)*organic*breath;const densityPulse=smoothstep(.04,.58,.34+.66*pulse-field.tone*.44),alpha=signal*(.26+field.layer*.4)*(field.tone>.82?peak:.88)*(.48+.52*densityPulse);ctx.fillStyle=Math.sin(field.phase+field.angle*2)>0?'#ffffff':'#ff3548';ctx.globalAlpha=alpha;const size=(.68+field.layer*.52)*particleSize;ctx.fillRect(x,y,size,size);}
+    for(const field of p.fieldPoints){const angle=field.angle+time*field.drift*motion+Math.sin(time*.62+field.phase)*.055,organic=1+Math.sin(field.angle*2+field.phase+time*.48)*.055,radius=1+field.layer*.8+Math.sin(time*.92+field.phase)*.035;const x=px+Math.cos(angle)*scale*radius*organic*breath,y=py+Math.sin(angle)*scale*(.22+field.layer*.32)*organic*breath;const densityPulse=smoothstep(.04,.58,.34+.66*pulse-field.tone*.44),alpha=signal*(.26+field.layer*.4)*(field.tone>.82?peak:.88)*(.48+.52*densityPulse),size=field.size*particleSize;ctx.fillStyle=Math.sin(field.phase+field.angle*2)>0?'#ffffff':'#ff3548';ctx.globalAlpha=alpha*.11;ctx.beginPath();ctx.arc(x,y,size*1.35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=alpha*.72;ctx.beginPath();ctx.arc(x,y,size*.5,0,Math.PI*2);ctx.fill();}
     for(const point of p.points){const radialPoint=Math.hypot(point.x,point.y),angle=Math.atan2(point.y,point.x)+Math.sin(time*.26+point.phase)*.018,curl=1+Math.sin(angle*5+time*.42+point.phase)*.009,depth=point.depth||0,breathingDepth=Math.sin(time*.58+point.phase)*.006;let x=px+Math.cos(angle)*radialPoint*scale*curl+depth*scale*.026+Math.sin(time*(1.25+point.tone)+point.phase)*(point.spill?1.8:.55),y=py+Math.sin(angle)*radialPoint*scale*curl+depth*scale*.018+Math.cos(time*(1.1+point.tone)+point.phase)*(point.spill?1.5:.55);
       if(performance.now()<p.scatteredUntil){const scatter=Math.min(1,(p.scatteredUntil-performance.now())/850);x+=Math.sin(point.phase*3.4+time*3*motion)*scatter*45;y+=Math.cos(point.phase*2.9+time*4*motion)*scatter*32;}
-      const shimmer=.82+.18*Math.sin(time*1.7+point.phase),whiteCore=point.tone>.62&&Math.sin(point.phase+point.x*9+point.y*11)>.08;ctx.fillStyle=whiteCore?'#ffffff':'#ff3548';ctx.globalAlpha=signal*shimmer*(whiteCore?peak*.86:.82)*(.86+.14*(point.tone||0))*(point.spill?.46:1);
-      const dotSize=((whiteCore?.46:.34)+signal*(whiteCore?.44:.32))*particleSize*breath*(point.spill?.72:1);ctx.beginPath();ctx.arc(x,y,dotSize*.5,0,Math.PI*2);ctx.fill();
+      const shimmer=.82+.18*Math.sin(time*1.7+point.phase),whiteCore=point.tone>.62&&Math.sin(point.phase+point.x*9+point.y*11)>.08,dotSize=point.size*particleSize,alpha=signal*shimmer*(whiteCore?peak*.86:.82)*(.86+.14*(point.tone||0))*(point.spill?.46:1);ctx.fillStyle=whiteCore?'#ffffff':'#ff3548';ctx.globalAlpha=alpha*.11;ctx.beginPath();ctx.arc(x,y,dotSize*1.35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=alpha*.72;ctx.beginPath();ctx.arc(x,y,dotSize*.5,0,Math.PI*2);ctx.fill();
     }
-    for(const point of p.corePoints){const radial=1+pulse*.035;ctx.fillStyle='#fff';ctx.globalAlpha=signal*(.24+.72*pulse);const size=(.72+pulse*.52)*particleSize;ctx.fillRect(px+point.x*scale*radial,py+point.y*scale*radial,size,size);}
+    for(const point of p.corePoints){const radial=1+pulse*.035,x=px+point.x*scale*radial,y=py+point.y*scale*radial,size=point.size*particleSize,alpha=signal*(.24+.72*pulse);ctx.fillStyle='#fff';ctx.globalAlpha=alpha*.11;ctx.beginPath();ctx.arc(x,y,size*1.35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=alpha*.72;ctx.beginPath();ctx.arc(x,y,size*.5,0,Math.PI*2);ctx.fill();}
   }
   ctx.globalAlpha=1;
   m.speed*=Math.pow(.025,dt);

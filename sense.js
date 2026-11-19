@@ -207,9 +207,9 @@ async function startExperience(){
 }
 function spawnTrail(x,y,amount=5,directionX=0,directionY=0,startX=x,startY=y){
   const s=experienceState,density={LOW:.7,MID:1,HIGH:1.35}[s.settings.density],motion=s.settings.movement==='FAST'?1.3:.62;
-  s.residueUntil=performance.now()+s.settings.trail*3000;
+  s.residueUntil=performance.now()+4000;
   const magnitude=Math.hypot(directionX,directionY),tangentX=magnitude>.5?directionX/magnitude:1,tangentY=magnitude>.5?directionY/magnitude:0,count=Math.max(3,Math.round(amount*12*density));
-  for(let i=0;i<count;i++){const along=magnitude>.5?Math.random():1,angle=Math.random()*Math.PI*2,radius=3.2+Math.sqrt(Math.random())*25.6,radialX=Math.cos(angle),radialY=Math.sin(angle),xAlong=startX+directionX*along+radialX*radius,yAlong=startY+directionY*along+radialY*radius,outward=randomBetween(7,24)*motion,swirl=randomBetween(-10,10)*motion,wake=randomBetween(-4,8)*motion;s.trail.push({x:xAlong,y:yAlong,vx:radialX*outward-tangentY*swirl+tangentX*wake,vy:radialY*outward+tangentX*swirl+tangentY*wake,age:0,life:s.settings.trail*randomBetween(.9,1.12),size:randomBetween(.72,1.18),heat:1});}
+  for(let i=0;i<count;i++){const along=magnitude>.5?Math.random():1,angle=Math.random()*Math.PI*2,radius=3.2+Math.sqrt(Math.random())*25.6,radialX=Math.cos(angle),radialY=Math.sin(angle),xAlong=startX+directionX*along+radialX*radius,yAlong=startY+directionY*along+radialY*radius,outward=randomBetween(7,24)*motion,swirl=randomBetween(-10,10)*motion,wake=randomBetween(-4,8)*motion;s.trail.push({x:xAlong,y:yAlong,vx:radialX*outward-tangentY*swirl+tangentX*wake,vy:radialY*outward+tangentX*swirl+tangentY*wake,age:0,life:Math.min(4,s.settings.trail*randomBetween(.9,1.12)),size:randomBetween(.72,1.18),heat:1});}
   const maxTrailPoints=Math.round({LOW:17600,MID:35200,HIGH:50000}[s.settings.density]);if(s.trail.length>maxTrailPoints)s.trail.splice(0,s.trail.length-maxTrailPoints);
 }
 function pointerMove(event){
@@ -328,7 +328,7 @@ function drawPrey(ctx,s,dt,time){
 }
 function drawTrail(ctx,s,dt){
   for(let i=s.trail.length-1;i>=0;i--){const p=s.trail[i];p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.16,dt);p.vy*=Math.pow(.16,dt);if(p.age>=p.life){s.trail.splice(i,1);continue;}
-    const fade=Math.pow(1-p.age/p.life,1.4),size={S:.8,M:1.05,L:1.2}[s.settings.size],dot=p.size*size*(.78+fade*.22)/6;ctx.fillStyle='#ffffff';ctx.globalAlpha=fade*.22;ctx.beginPath();ctx.arc(p.x,p.y,dot*1.35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=Math.min(1,fade*1.44);ctx.beginPath();ctx.arc(p.x,p.y,dot*.5,0,Math.PI*2);ctx.fill();
+    const fade=Math.pow(1-p.age/p.life,.85),size={S:.8,M:1.05,L:1.2}[s.settings.size],dot=p.size*size*(.78+fade*.22)/6;ctx.fillStyle='#ffffff';ctx.globalAlpha=fade*.22;ctx.beginPath();ctx.arc(p.x,p.y,dot*1.35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=fade*.96;ctx.beginPath();ctx.arc(p.x,p.y,dot*.5,0,Math.PI*2);ctx.fill();
   }
   ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.shadowColor='transparent';ctx.globalCompositeOperation='source-over';
 }
@@ -343,7 +343,7 @@ function drawExperience(now){
   const s=experienceState;if(!s.running)return;const ctx=experienceContext,dt=Math.min(.04,Math.max(.001,(now-(s.lastTime||now))*.001));s.lastTime=now;
   ctx.fillStyle='#060911';ctx.fillRect(0,0,s.width,s.height);const time=now*.001;
   const ground=ctx.createLinearGradient(0,s.height*.52,0,s.height);ground.addColorStop(0,'rgba(16,28,45,0)');ground.addColorStop(1,'rgba(17,30,48,.32)');ctx.fillStyle=ground;ctx.fillRect(0,s.height*.48,s.width,s.height*.52);
-  if(s.thermalContext){const residue=s.thermalContext;residue.save();residue.setTransform(1,0,0,1,0,0);residue.globalCompositeOperation='source-over';residue.globalAlpha=1;residue.fillStyle=`rgba(6,9,17,${clamp(dt/Math.max(.8,s.settings.trail*1.25),.002,.12)})`;residue.fillRect(0,0,s.thermalCanvas.width,s.thermalCanvas.height);residue.restore();residue.setTransform(s.dpr*.68,0,0,s.dpr*.68,0,0);residue.globalCompositeOperation='lighter';drawTrail(residue,s,dt);ctx.drawImage(s.thermalCanvas,0,0,s.width,s.height);}
+  if(s.thermalContext){const residue=s.thermalContext;residue.save();residue.setTransform(1,0,0,1,0,0);residue.globalCompositeOperation='source-over';residue.globalAlpha=1;residue.fillStyle=`rgba(6,9,17,${clamp(dt/.35,.002,.12)})`;residue.fillRect(0,0,s.thermalCanvas.width,s.thermalCanvas.height);residue.restore();residue.setTransform(s.dpr*.68,0,0,s.dpr*.68,0,0);residue.globalCompositeOperation='lighter';drawTrail(residue,s,dt);ctx.drawImage(s.thermalCanvas,0,0,s.width,s.height);}
   if(s.mouse.seen){const ease=1-Math.exp(-dt*28);s.mouse.heatX+=(s.mouse.x-s.mouse.heatX)*ease;s.mouse.heatY+=(s.mouse.y-s.mouse.heatY)*ease;}
   drawAmbient(ctx,s,dt,time);drawRocks(ctx,s,time);
   for(let i=s.sonars.length-1;i>=0;i--){s.sonars[i].age+=dt;if(s.sonars[i].age>=s.sonars[i].duration)s.sonars.splice(i,1);}

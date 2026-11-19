@@ -208,9 +208,9 @@ async function startExperience(){
 function spawnTrail(x,y,amount=5,directionX=0,directionY=0,startX=x,startY=y){
   const s=experienceState,density={LOW:.7,MID:1,HIGH:1.35}[s.settings.density],motion=s.settings.movement==='FAST'?1.3:.62;
   s.residueUntil=performance.now()+s.settings.trail*3000;
-  const magnitude=Math.hypot(directionX,directionY),tangentX=magnitude>.5?directionX/magnitude:1,tangentY=magnitude>.5?directionY/magnitude:0,count=Math.max(3,Math.round(amount*density));
+  const magnitude=Math.hypot(directionX,directionY),tangentX=magnitude>.5?directionX/magnitude:1,tangentY=magnitude>.5?directionY/magnitude:0,count=Math.max(3,Math.round(amount*3*density));
   for(let i=0;i<count;i++){const along=magnitude>.5?Math.random():1,angle=Math.random()*Math.PI*2,radius=6.4+Math.sqrt(Math.random())*51.2,radialX=Math.cos(angle),radialY=Math.sin(angle),xAlong=startX+directionX*along+radialX*radius,yAlong=startY+directionY*along+radialY*radius,outward=randomBetween(7,24)*motion,swirl=randomBetween(-10,10)*motion,wake=randomBetween(-4,8)*motion;s.trail.push({x:xAlong,y:yAlong,vx:radialX*outward-tangentY*swirl+tangentX*wake,vy:radialY*outward+tangentX*swirl+tangentY*wake,age:0,life:s.settings.trail*randomBetween(.9,1.12),size:randomBetween(.72,1.18),heat:1});}
-  const maxTrailPoints=Math.round(1800*density);if(s.trail.length>maxTrailPoints)s.trail.splice(0,s.trail.length-maxTrailPoints);
+  const maxTrailPoints=Math.round({LOW:4400,MID:8800,HIGH:12500}[s.settings.density]);if(s.trail.length>maxTrailPoints)s.trail.splice(0,s.trail.length-maxTrailPoints);
 }
 function pointerMove(event){
   const s=experienceState,m=s.mouse,now=performance.now(),x=event.clientX,y=event.clientY,dt=Math.max(.008,(now-(m.moveTime||now))*.001);

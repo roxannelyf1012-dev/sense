@@ -208,9 +208,9 @@ async function startExperience(){
 function spawnTrail(x,y,amount=5,directionX=0,directionY=0,startX=x,startY=y){
   const s=experienceState,density={LOW:.7,MID:1,HIGH:1.35}[s.settings.density],motion=s.settings.movement==='FAST'?1.3:.62;
   s.residueUntil=performance.now()+1000;
-  const magnitude=Math.hypot(directionX,directionY),tangentX=magnitude>.5?directionX/magnitude:1,tangentY=magnitude>.5?directionY/magnitude:0,count=Math.max(3,Math.round(amount*12*density));
+  const magnitude=Math.hypot(directionX,directionY),tangentX=magnitude>.5?directionX/magnitude:1,tangentY=magnitude>.5?directionY/magnitude:0,count=Math.max(3,Math.round(amount*24*density));
   for(let i=0;i<count;i++){const along=magnitude>.5?Math.random():1,angle=Math.random()*Math.PI*2,radius=3.2+Math.sqrt(Math.random())*25.6,radialX=Math.cos(angle),radialY=Math.sin(angle),xAlong=startX+directionX*along+radialX*radius,yAlong=startY+directionY*along+radialY*radius,outward=randomBetween(7,24)*motion,swirl=randomBetween(-10,10)*motion,wake=randomBetween(-4,8)*motion;s.trail.push({x:xAlong,y:yAlong,vx:radialX*outward-tangentY*swirl+tangentX*wake,vy:radialY*outward+tangentX*swirl+tangentY*wake,age:0,life:Math.min(1,s.settings.trail*randomBetween(.9,1.12)),size:randomBetween(.72,1.18),heat:1});}
-  const maxTrailPoints=Math.round({LOW:17600,MID:35200,HIGH:50000}[s.settings.density]);if(s.trail.length>maxTrailPoints)s.trail.splice(0,s.trail.length-maxTrailPoints);
+  const maxTrailPoints=Math.round({LOW:35200,MID:70400,HIGH:100000}[s.settings.density]);if(s.trail.length>maxTrailPoints)s.trail.splice(0,s.trail.length-maxTrailPoints);
 }
 function pointerMove(event){
   const s=experienceState,m=s.mouse,now=performance.now(),x=event.clientX,y=event.clientY,dt=Math.max(.008,(now-(m.moveTime||now))*.001);
@@ -328,12 +328,12 @@ function drawPrey(ctx,s,dt,time){
 }
 function drawTrail(ctx,s,dt){
   for(let i=s.trail.length-1;i>=0;i--){const p=s.trail[i];p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=Math.pow(.16,dt);p.vy*=Math.pow(.16,dt);if(p.age>=p.life){s.trail.splice(i,1);continue;}
-    const fade=Math.pow(1-p.age/p.life,.85),size={S:.8,M:1.05,L:1.2}[s.settings.size],dot=p.size*size*(.78+fade*.22)/6;ctx.fillStyle='#ffffff';ctx.globalAlpha=fade*.22;ctx.beginPath();ctx.arc(p.x,p.y,dot*1.35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=fade*.96;ctx.beginPath();ctx.arc(p.x,p.y,dot*.5,0,Math.PI*2);ctx.fill();
+    const fade=Math.pow(1-p.age/p.life,.85),size={S:.8,M:1.05,L:1.2}[s.settings.size],dot=p.size*size*(.78+fade*.22)/3;ctx.fillStyle='#ffffff';ctx.globalAlpha=fade*.22;ctx.beginPath();ctx.arc(p.x,p.y,dot*1.35,0,Math.PI*2);ctx.fill();ctx.globalAlpha=fade*.96;ctx.beginPath();ctx.arc(p.x,p.y,dot*.5,0,Math.PI*2);ctx.fill();
   }
   ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.shadowColor='transparent';ctx.globalCompositeOperation='source-over';
 }
 function drawThermalCursor(ctx,s,time){
-  const m=s.mouse;if(!m.seen)return;const x=m.heatX,y=m.heatY,size={S:.7,M:.82,L:.95}[s.settings.size]/6;ctx.fillStyle='#ffffff';ctx.globalAlpha=1;ctx.beginPath();ctx.arc(x,y,size*.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+  const m=s.mouse;if(!m.seen)return;const x=m.heatX,y=m.heatY,size={S:.7,M:.82,L:.95}[s.settings.size]/3;ctx.fillStyle='#ffffff';ctx.globalAlpha=1;ctx.beginPath();ctx.arc(x,y,size*.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
 }
 function drawDirection(ctx,s,time){
   if(!s.sonars.length)return;const wave=s.sonars[s.sonars.length-1];if(wave.age>1.35)return;const m=s.mouse,p=s.prey,angle=Math.atan2(p.y*s.height-m.y,p.x*s.width-m.x),r=43+Math.sin(time*4)*2,x=m.x+Math.cos(angle)*r,y=m.y+Math.sin(angle)*r;

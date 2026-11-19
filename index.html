@@ -3,53 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#040507">
-  <meta name="description" content="Experience heat, scent, vibration and space through a rattlesnake's sensory world.">
-  <title>SENSE — Experience the world through a rattlesnake</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#050607">
+  <meta name="description" content="Enter a rattlesnake's pit-organ point of view and sense a heartbeat moving through the cold.">
+  <title>SENSE — Not Being Human</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./sense.css">
   <script defer src="./sense.js"></script>
-  <script>
-    window.addEventListener('error', function (event) {
-      if (!event.message && event.target?.tagName !== 'SCRIPT') return;
-      const reveal = function () {
-        const status = document.getElementById('status');
-        if (status) { status.hidden = false; status.textContent = 'PARTICLE FIELD COULD NOT START. Serve the SENSE folder over localhost or HTTPS, then reload.'; }
-      };
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', reveal, { once: true }); else reveal();
-    }, true);
-  </script>
 </head>
 <body>
-  <main class="world" id="world">
-    <canvas id="sense-field" aria-label="Interactive particle visualization of rattlesnake perception"></canvas>
-    <div class="edge-shade" aria-hidden="true"></div>
+  <main class="installation" id="landing-screen">
+    <div class="scene" aria-hidden="true">
+      <img class="scene-image serpent" src="./assets/serpent-particle-reference.png" alt="">
+      <img class="scene-image scales" src="./assets/scale-particle-reference.png" alt="">
+    </div>
+    <canvas id="thermal-field" aria-hidden="true"></canvas>
+    <div class="scan-ring" id="scan-ring" aria-hidden="true"><i></i></div>
+    <div class="vignette" aria-hidden="true"></div>
     <header class="topline">
-      <a class="wordmark" href="#world"><span>S</span>ENSE <i>/</i> SERPENT</a>
-      <p class="descriptor">EXPERIENCE THE WORLD THROUGH A RATTLESNAKE</p>
-      <button id="camera-toggle" class="camera-toggle" type="button"><span class="camera-dot"></span><span id="camera-label">HAND TRACKING</span></button>
+      <span class="wordmark">SENSE <i>/</i> SERPENT</span>
+      <span class="mode-label"><b></b> INTERACTIVE THERMAL SCANNING</span>
     </header>
-    <section class="field-title" aria-live="polite">
-      <p id="state-index">01 / INFRARED</p>
-      <h1 id="state-title">Warmth<br>in the dark.</h1>
-      <p id="state-copy">Move close to reveal a living heat signature.</p>
+    <section class="title-block">
+      <p class="eyebrow">PIT-ORGAN PERCEPTION / 01</p>
+      <h1>Read the<br><em>warmth.</em></h1>
+      <p class="description">Paired loreal pits let rattlesnakes detect infrared heat from warm animals, even in darkness.</p>
+      <button class="start-button" id="start-sensing" type="button">START</button>
     </section>
-    <nav class="sense-nav" aria-label="Sensory states">
-      <button class="sense-button active" data-mode="infrared" type="button"><i></i>INFRARED</button>
-      <button class="sense-button" data-mode="chemical" type="button"><i></i>CHEMICAL</button>
-      <button class="sense-button" data-mode="vibration" type="button"><i></i>VIBRATION</button>
-      <button class="sense-button" data-mode="spatial" type="button"><i></i>SPATIAL</button>
-    </nav>
-    <button class="field-note-toggle" id="note-toggle" type="button" aria-expanded="false" aria-controls="field-note"><span id="note-icon">+</span> FIELD NOTE</button>
-    <aside class="field-note" id="field-note" hidden>
-      <p id="note-copy">Pit organs detect infrared radiation from warm animals. This particle field interprets thermal contrast; it is not a literal image seen by a snake.</p>
-    </aside>
-    <div class="interaction-cue" id="interaction-cue">MOVE POINTER TO FOLLOW THE WARM SIGNAL</div>
-    <div class="status" id="status" role="status" hidden></div>
-    <button class="camera-stop" id="camera-stop" type="button" hidden>STOP CAMERA</button>
-    <video id="camera-video" autoplay muted playsinline aria-label="Local hand tracking camera preview" hidden></video>
-    <footer class="bottomline"><span id="stage-label">SCALE → EYE → PIT → HEAT</span><span class="hairline"></span><span>WHITE / RED / BLUE</span></footer>
+    <div class="scan-label" id="scan-label"><span></span> INFRARED FIELD / READY</div>
+    <div class="instruction">MOVE YOUR CURSOR TO SCAN</div>
+    <footer class="bottomline"><span>THERMAL RANGE / BLACK → WHITE</span><span class="rule"></span><span id="signal-label">WHITE / RED PARTICLE FIELD</span></footer>
   </main>
+  <section class="experience" id="experience-screen" aria-label="Rattlesnake pit-organ point of view" aria-hidden="true">
+    <canvas id="experience-canvas" aria-label="Interactive thermal landscape"></canvas>
+    <div class="experience-vignette" aria-hidden="true"></div>
+    <header class="experience-topline">
+      <div class="experience-brand"><span>RATTLESNAKE PERCEPTION</span><small>PIT-ORGAN THERMAL FIELD</small></div>
+      <nav class="experience-controls" aria-label="Experience controls">
+        <button id="settings-toggle" type="button" aria-expanded="false" aria-controls="settings-panel">SETTINGS</button>
+        <button id="sound-toggle" type="button" aria-pressed="true"><i></i>SOUND</button>
+        <button id="reset-experience" type="button">RESET</button>
+      </nav>
+    </header>
+    <aside class="experience-field-note" aria-label="Rattlesnake sensing field note">
+      <p>PIT-ORGAN / INFRARED</p>
+      <span>Paired loreal pits sense infrared heat. Move to reveal the mouse's particle signature; slow movement resolves its shape, while rushing scatters the signal.</span>
+    </aside>
+    <section class="settings-panel" id="settings-panel" aria-label="Particle settings" hidden>
+      <div class="setting-row"><span>PARTICLE SIZE</span><div class="segments"><button data-setting="size" data-value="S" aria-pressed="false">S</button><button data-setting="size" data-value="M" aria-pressed="true">M</button><button data-setting="size" data-value="L" aria-pressed="false">L</button></div></div>
+      <div class="setting-row"><span>PARTICLE DENSITY</span><div class="segments"><button data-setting="density" data-value="LOW" aria-pressed="false">LOW</button><button data-setting="density" data-value="MID" aria-pressed="true">MID</button><button data-setting="density" data-value="HIGH" aria-pressed="false">HIGH</button></div></div>
+      <div class="setting-row"><span>TRAIL DURATION</span><div class="segments"><button data-setting="trail" data-value="1" aria-pressed="false">1s</button><button data-setting="trail" data-value="3" aria-pressed="true">3s</button><button data-setting="trail" data-value="5" aria-pressed="false">5s</button></div></div>
+      <div class="setting-row"><span>THERMAL INTENSITY</span><div class="segments"><button data-setting="thermal" data-value="LOW" aria-pressed="false">LOW</button><button data-setting="thermal" data-value="MID" aria-pressed="true">MID</button><button data-setting="thermal" data-value="HIGH" aria-pressed="false">HIGH</button></div></div>
+      <div class="setting-row"><span>MOVEMENT</span><div class="segments"><button data-setting="movement" data-value="SOFT" aria-pressed="true">SOFT</button><button data-setting="movement" data-value="FAST" aria-pressed="false">FAST</button></div></div>
+    </section>
+    <div class="prey-readout" id="prey-readout" aria-live="polite"></div>
+    <div class="experience-instruction" id="experience-instruction">MOVE TO SCAN / MOVE SLOWLY TO REVEAL / CLICK TO SAMPLE</div>
+    <button class="strike-button" id="strike-button" type="button" hidden>[ STRIKE ]</button>
+    <section class="ending" id="ending" aria-live="polite" aria-hidden="true">
+      <p>RATTLESNAKE PERCEPTION</p>
+      <h2>To be a serpent is not to see shapes.<br>It is to feel a heartbeat in the cold.</h2>
+      <button id="sense-again" type="button">[ SENSE AGAIN ]</button>
+    </section>
+  </section>
 </body>
 </html>
